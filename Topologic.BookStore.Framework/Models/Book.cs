@@ -104,6 +104,34 @@ namespace Topologic.BookStore.Framework.Models
             }
         }
 
+        public override string ToString()
+        {
+            var mainInfo = $"Title: {Title}, ISBN: {ISBN}";
+            if(Price != 0)
+            {
+                mainInfo += $", Price: {Price}";
+            }
+            if(AuthorNames.Count > 0)
+            {
+                mainInfo += $", Authors: {string.Join(",", AuthorNames)}";
+            }
+            if (ReleaseDate > DateTime.MinValue)
+            {
+                mainInfo += $", Release date: {ReleaseDate}";
+            }
+
+            return mainInfo;
+        }
+
+        public void AddAuthorName(string authorName)
+        {
+            if (string.IsNullOrWhiteSpace(authorName))
+            {
+                throw new ArgumentException("Author name cannot be empty", nameof(authorName));
+            }
+
+            AuthorNames.Add(authorName);
+        }
 
         private Boolean IsValidIsbn(string isbn)
         {
@@ -117,16 +145,6 @@ namespace Topologic.BookStore.Framework.Models
                 throw new ArgumentException("Mismatch of ISBN format", nameof(isbn));
             }
             return true;
-        }
-        
-        public void AddAuthorName(string authorName)
-        {
-            if(string.IsNullOrWhiteSpace(authorName))
-            {
-                throw new ArgumentException("Author name cannot be empty", nameof(authorName));
-            }
-
-            AuthorNames.Add(authorName);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Topologic.BookStore.Framework.Models
 {
-    public enum CoverType
+    public enum BookCoverType
     {
         Paperback,
         Hardcover,
