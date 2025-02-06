@@ -11,18 +11,24 @@ namespace Topologic.BookStore.Framework.Models
     public abstract class Book
     {
         private string _title;
-        private readonly string _ISBN;
-        private decimal _price;
-        private string _description;
-        private DateTime _releaseDate;
+        private readonly string _isbn;
+        private decimal _price = 0;
+        private string _description = string.Empty;
+
+        protected Book(string title, string isbn)
+        {
+            _title = title;
+            if(IsValidIsbn(isbn))
+                _isbn = isbn;
+        }
 
         protected Book(string title, string isbn, decimal price, params string[] authorNames)
         {
 
             Title = title;
             Price = price;
-
-            ValidateISBN(isbn);
+            if(IsValidIsbn(isbn))
+                _isbn = isbn;
 
             foreach (var authorName in authorNames)
             {
@@ -34,12 +40,14 @@ namespace Topologic.BookStore.Framework.Models
         {
             Title = title;
             Price = price;
+            if(IsValidIsbn(isbn))
+                _isbn = isbn;
+
             Description = description;
-            ReleaseDate = releaseDate;
             Language = language;
             Publisher = publisher;
+            ReleaseDate = releaseDate;
 
-            ValidateISBN(isbn);
 
             foreach (var authorName in authorNames)
             {
@@ -47,11 +55,11 @@ namespace Topologic.BookStore.Framework.Models
             }
         }
 
-        public string ISBN => _ISBN;
+        public string ISBN => _isbn;
         public Collection<string> AuthorNames { get; } = [];
-        public string Language { get; set; }
-        public string Publisher { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public string Language { get; set; } = string.Empty;
+        public string Publisher { get; set; } = string.Empty;
+        public DateTime ReleaseDate { get; set; } = DateTime.MinValue;
 
         public string Title
         {
@@ -97,7 +105,7 @@ namespace Topologic.BookStore.Framework.Models
         }
 
 
-        public void ValidateISBN(string isbn)
+        private Boolean IsValidIsbn(string isbn)
         {
             if (string.IsNullOrWhiteSpace(isbn))
             {
@@ -108,6 +116,7 @@ namespace Topologic.BookStore.Framework.Models
             {
                 throw new ArgumentException("Mismatch of ISBN format", nameof(isbn));
             }
+            return true;
         }
         
         public void AddAuthorName(string authorName)
