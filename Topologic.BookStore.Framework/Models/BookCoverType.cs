@@ -10,6 +10,7 @@ namespace Topologic.BookStore.Framework.Models
     {
         Paperback,
         Hardcover,
+        Pocket,
         spiral,
         comicbook,
         coloringbook

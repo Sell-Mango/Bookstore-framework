@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using Topologic.BookStore.Framework.Utilities;
 
 namespace Topologic.BookStore.Framework.Models
 {
-    public abstract class Book
+    public abstract class Book : IEquatable<Book>
     {
         private string _title;
         private readonly string _isbn;
@@ -17,9 +15,9 @@ namespace Topologic.BookStore.Framework.Models
 
         protected Book(string title, string isbn)
         {
-            _title = title;
-            if(IsValidIsbn(isbn))
-                _isbn = isbn;
+            Title = title;
+            if(!BookValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            _isbn = isbn;
         }
 
         protected Book(string title, string isbn, decimal price, params string[] authorNames)
@@ -27,8 +25,8 @@ namespace Topologic.BookStore.Framework.Models
 
             Title = title;
             Price = price;
-            if(IsValidIsbn(isbn))
-                _isbn = isbn;
+            if (!BookValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            _isbn = isbn;
 
             foreach (var authorName in authorNames)
             {
@@ -40,8 +38,8 @@ namespace Topologic.BookStore.Framework.Models
         {
             Title = title;
             Price = price;
-            if(IsValidIsbn(isbn))
-                _isbn = isbn;
+            if (!BookValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            _isbn = isbn;
 
             Description = description;
             Language = language;
@@ -104,6 +102,25 @@ namespace Topologic.BookStore.Framework.Models
             }
         }
 
+        public bool Equals(Book? otherBook)
+        {
+            if (otherBook == null) return false;
+            return ISBN == otherBook.ISBN;
+        }
+
+        public override int GetHashCode()
+        {
+            return ISBN.GetHashCode();
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            if (ISBN == ((Book) obj).ISBN) return true;
+            return false;
+
+        }
+
         public override string ToString()
         {
             var mainInfo = $"Title: {Title}, ISBN: {ISBN}";
@@ -131,20 +148,6 @@ namespace Topologic.BookStore.Framework.Models
             }
 
             AuthorNames.Add(authorName);
-        }
-
-        private Boolean IsValidIsbn(string isbn)
-        {
-            if (string.IsNullOrWhiteSpace(isbn))
-            {
-                throw new ArgumentException("ISBN cannot by empty", nameof(isbn));
-            }
-
-            if (!Regex.IsMatch(isbn, @"^(?:ISBN(?:-1[03])?:? )?(?=[-0-9 ]{17}$|[-0-9X ]{13}$|[0-9X]{10}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?(?:[0-9]+[- ]?){2}[0-9X]$", RegexOptions.IgnoreCase))
-            {
-                throw new ArgumentException("Mismatch of ISBN format", nameof(isbn));
-            }
-            return true;
         }
     }
 }

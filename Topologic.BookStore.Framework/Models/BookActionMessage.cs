@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace Topologic.BookStore.Framework.Models
 {
-    internal class Inventory
+    public enum BookActionMessage
     {
+        Added,
+        Removed,
+        Increased,
+        Decreased,
+        NotFound,
+        UpdateSuccess,
+        UpdateFailed
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Topologic.BookStore.Framework.Models
+namespace Topologic.BookStore.Framework.Managers
 {
-    internal class BookStoreManager
+    internal class PaymentManager
     {
     }
 }

@@ -8,9 +8,9 @@ class Program
     {
         Console.WriteLine("Hello, World!");
 
-        var book = new PhysicalBook("snømannen", "9788203450815", 249, "Kjell-Magne Larsen");
+        // var book = new PhysicalBook("snømannen", "9788203450815", 249, "Kjell-Magne Larsen");
 
-        Console.WriteLine(book);
+        // Console.WriteLine(book);
     }
 }
 

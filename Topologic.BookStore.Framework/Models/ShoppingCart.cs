@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Topologic.BookStore.Framework.Models
 {
-    internal class ShoppingCart
+    public class ShoppingCart
     {
+
+
+        public bool AddToCart()
+        {
+            return false;
+        }
+        public bool RemoveFromCart()
+        {
+            return false;
+        }
     }
 }
