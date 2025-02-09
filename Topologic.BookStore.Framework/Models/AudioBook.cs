@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Topologic.BookStore.Framework.Models
 {
     public class AudioBook : Book
@@ -18,7 +13,7 @@ namespace Topologic.BookStore.Framework.Models
             Duration = duration;
             Narrator = narrator;
         }
-        public AudioBook(string title, string isbn, decimal price, int numOfCopies, TimeSpan duration, string narrator, params string[] authorNames)
+        public AudioBook(string title, string isbn, double price, int numOfCopies, TimeSpan duration, string narrator, params string[] authorNames)
             : base(title, isbn, price, authorNames)
         {
             NumOfCopies = numOfCopies;
@@ -26,7 +21,7 @@ namespace Topologic.BookStore.Framework.Models
             Narrator = narrator;
         }
 
-        public AudioBook(string title, string isbn, decimal price, int numOfCopies, TimeSpan duration, string narrator, string[] authorNames, string description, string language, string publisher, DateTime releaseDate)
+        public AudioBook(string title, string isbn, double price, int numOfCopies, TimeSpan duration, string narrator, string[] authorNames, string description, string language, string publisher, DateTime releaseDate)
             : base(title, isbn, price, authorNames, description, language, publisher, releaseDate)
         {
             NumOfCopies = numOfCopies;

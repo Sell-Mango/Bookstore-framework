@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Topologic.BookStore.Framework.Utilities;
 
 namespace Topologic.BookStore.Framework.Models
 {
@@ -12,6 +9,18 @@ namespace Topologic.BookStore.Framework.Models
 
         public EBook(string title, string isbn, double fileSize)
             : base(title, isbn)
+        {
+            FileSize = fileSize;
+        }
+
+        public EBook(string title, string isbn, double fileSize, double price, params string[] authorNames)
+            : base(title, isbn, price, authorNames)
+        {
+            FileSize = fileSize;
+        }
+
+        public EBook(string title, string isbn, double fileSize, double price, string[] authorNames, string description, string language, string publisher, DateTime releaseDate)
+            : base(title, isbn, price, authorNames, description, language, publisher, releaseDate)
         {
             FileSize = fileSize;
         }

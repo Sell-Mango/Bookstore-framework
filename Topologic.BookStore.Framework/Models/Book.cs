@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
 using Topologic.BookStore.Framework.Utilities;
 
 namespace Topologic.BookStore.Framework.Models
@@ -10,22 +8,22 @@ namespace Topologic.BookStore.Framework.Models
     {
         private string _title;
         private readonly string _isbn;
-        private decimal _price = 0;
+        private double _price = 0;
         private string _description = string.Empty;
 
         protected Book(string title, string isbn)
         {
             Title = title;
-            if(!BookValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            if(!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
             _isbn = isbn;
         }
 
-        protected Book(string title, string isbn, decimal price, params string[] authorNames)
+        protected Book(string title, string isbn, double price, params string[] authorNames)
         {
 
             Title = title;
             Price = price;
-            if (!BookValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
             _isbn = isbn;
 
             foreach (var authorName in authorNames)
@@ -34,11 +32,11 @@ namespace Topologic.BookStore.Framework.Models
             }
         }
 
-        protected Book(string title, string isbn, decimal price, string[] authorNames, string description, string language, string publisher, DateTime releaseDate)
+        protected Book(string title, string isbn, double price, string[] authorNames, string description, string language, string publisher, DateTime releaseDate)
         {
             Title = title;
             Price = price;
-            if (!BookValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
             _isbn = isbn;
 
             Description = description;
@@ -73,7 +71,7 @@ namespace Topologic.BookStore.Framework.Models
             }
         }
 
-        public decimal Price
+        public double Price
         {
             get => _price;
             set

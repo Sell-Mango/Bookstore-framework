@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Topologic.BookStore.Framework.Models
 {
     public class Order
@@ -13,20 +7,21 @@ namespace Topologic.BookStore.Framework.Models
         private readonly string _customerId;
         private readonly DateTime _orderDateTime;
         private readonly double _orderTotal;
-        private readonly Collection<Book> _orderedItems = [];
+        private readonly Dictionary<Book, int> _orderedItems;
         
-        public Order(string orderId, string customerId, DateTime orderDateTime, double orderTotal)
+        public Order(string customerId, DateTime orderDateTime, double orderTotal, Dictionary<Book, int> orderedItems)
         {
-            _orderId = orderId;
+            _orderId = Guid.NewGuid().ToString();
             _customerId = customerId;
             _orderDateTime = orderDateTime;
             _orderTotal = orderTotal;
+            _orderedItems = orderedItems;
         }
 
         public string OrderId { get => _orderId; }
         public string CustomerId { get => _customerId; }
-        public DateTime orderDateTime { get => _orderDateTime; }
+        public DateTime OrderDateTime { get => _orderDateTime; }
         public double OrderTotal { get => _orderTotal; }
-        public Collection<Book> OrderedItems { get => _orderedItems; }
+        public Dictionary<Book, int> OrderedItems { get => _orderedItems; }
     }
 }
