@@ -8,13 +8,14 @@ namespace Topologic.BookStore.Framework.Models
     {
         private string _title;
         private readonly string _isbn;
-        private double _price = 0;
+        private double _price;
         private string _description = string.Empty;
 
-        protected Book(string title, string isbn)
+        protected Book(string title, string isbn, double price)
         {
             Title = title;
             if(!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            Price = price;
             _isbn = isbn;
         }
 

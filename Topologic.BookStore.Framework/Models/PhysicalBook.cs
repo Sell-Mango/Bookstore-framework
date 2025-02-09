@@ -7,15 +7,15 @@ namespace Topologic.BookStore.Framework.Models
         private int _totalPages;
         private readonly BookCoverType _bookCoverType;
 
-        public PhysicalBook(string title, string isbn, int weight, int totalPages)
-            : base(title, isbn)
+        public PhysicalBook(string title, string isbn, double price, double weight, int totalPages)
+            : base(title, isbn, price)
         {
             _weight = weight;
             _totalPages = totalPages;
         }
 
 
-        public PhysicalBook(string title, string isbn, double price, int weight, int totalPages, BookCoverType bookCoverType, params string[] authorNames) 
+        public PhysicalBook(string title, string isbn, double price, double weight, int totalPages, BookCoverType bookCoverType, params string[] authorNames) 
             : base(title, isbn, price, authorNames)
         {
             Weight = weight;
@@ -24,7 +24,7 @@ namespace Topologic.BookStore.Framework.Models
             
         }
 
-        public PhysicalBook(string title, string isbn, double price, int weight, int totalPages, BookCoverType bookCoverType, string[] authorNames, string description, string language, string publisher, DateTime releaseDate) 
+        public PhysicalBook(string title, string isbn, double price, double weight, int totalPages, BookCoverType bookCoverType, string[] authorNames, string description, string language, string publisher, DateTime releaseDate) 
             : base(title, isbn, price, authorNames, description, language, publisher, releaseDate)
         {
             Weight = weight;

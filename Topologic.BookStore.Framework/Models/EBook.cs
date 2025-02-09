@@ -7,8 +7,8 @@ namespace Topologic.BookStore.Framework.Models
     {
         private double _fileSize = 0;
 
-        public EBook(string title, string isbn, double fileSize)
-            : base(title, isbn)
+        public EBook(string title, string isbn, double price, double fileSize)
+            : base(title, isbn, price)
         {
             FileSize = fileSize;
         }
