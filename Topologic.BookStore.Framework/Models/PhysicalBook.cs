@@ -5,7 +5,6 @@ namespace Topologic.BookStore.Framework.Models
     {
         private double _weight;
         private int _totalPages;
-        private readonly BookCoverType _bookCoverType;
 
         public PhysicalBook(string title, string isbn, double price, double weight, int totalPages)
             : base(title, isbn, price)
@@ -15,21 +14,19 @@ namespace Topologic.BookStore.Framework.Models
         }
 
 
-        public PhysicalBook(string title, string isbn, double price, double weight, int totalPages, BookCoverType bookCoverType, params string[] authorNames) 
-            : base(title, isbn, price, authorNames)
+        public PhysicalBook(string title, string isbn, double price, double weight, int totalPages, string authorName) 
+            : base(title, isbn, price, authorName)
         {
             Weight = weight;
             TotalPages = totalPages;
-            BookCoverType = bookCoverType;
             
         }
 
-        public PhysicalBook(string title, string isbn, double price, double weight, int totalPages, BookCoverType bookCoverType, string[] authorNames, string description, string language, string publisher, DateTime releaseDate) 
-            : base(title, isbn, price, authorNames, description, language, publisher, releaseDate)
+        public PhysicalBook(string title, string isbn, double price, double weight, int totalPages, string authorName, string description, string language, string publisher, DateTime releaseDate) 
+            : base(title, isbn, price, authorName, description, language, publisher, releaseDate)
         {
             Weight = weight;
             TotalPages = totalPages;
-            BookCoverType = bookCoverType;
         }
 
         public double Weight
@@ -56,18 +53,6 @@ namespace Topologic.BookStore.Framework.Models
                     throw new ArgumentOutOfRangeException(nameof(value), "Pages cannot be zero or negative");
                 }
                 _totalPages = value;
-            }
-        }
-
-        public BookCoverType BookCoverType
-        {
-            get => _bookCoverType;
-            set
-            {
-                if(!Enum.IsDefined(value))
-                {
-                    throw new ArgumentException("Invalid book cover type");
-                }
             }
         }
     }

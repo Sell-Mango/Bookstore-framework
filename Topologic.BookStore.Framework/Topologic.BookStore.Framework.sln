@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topologic.BookStore.Framework", "Topologic.BookStore.Framework.csproj", "{1C6EAC45-0F7A-4913-8478-83B6D366DB86}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topologic.BookStore.UnitTests", "..\Topologic.BookStore.UnitTests\Topologic.BookStore.UnitTests.csproj", "{422054A5-4888-465A-9AA9-3BADE6C49D18}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1C6EAC45-0F7A-4913-8478-83B6D366DB86} = {1C6EAC45-0F7A-4913-8478-83B6D366DB86}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topologic.BookStore.ClientTestCLI", "..\Topologic.BookStore.ClientTestCLI\Topologic.BookStore.ClientTestCLI.csproj", "{526598A1-B906-499C-A5EC-038A0D026FA8}"
 	ProjectSection(ProjectDependencies) = postProject

@@ -7,26 +7,24 @@ namespace Topologic.BookStore.Framework.Models
     public class Customer
     {
         private readonly string _customerId;
-        private string _email;
-        private string _firstName;
-        private string _lastName;
+        private string _email = string.Empty;
+        private string _firstName = string.Empty;
+        private string _lastName = string.Empty;
+        private double _wallet = 0;
 
-        public Customer(string customerId, string email)
+        public Customer(string email)
         {
-            _customerId = customerId;
+            _customerId = Guid.NewGuid().ToString();
             Email = email;
-            FirstName = string.Empty;
-            LastName = string.Empty;
-
         }
 
-        public Customer(string customerId, string email, string firstName, string lastName)
+        public Customer(string email, string firstName, string lastName)
         {
-            _customerId = customerId;
+            _customerId = Guid.NewGuid().ToString();
             Email = email;
 
-            _firstName = firstName;
-            _lastName = lastName;
+            FirstName = firstName;
+            LastName = lastName;
         }
 
 
@@ -35,7 +33,7 @@ namespace Topologic.BookStore.Framework.Models
             get => _email;
             set
             {
-                if (!CustomerValidator.IsEmailValid(value)) throw new ArgumentException("Invalid email format", nameof(value));
+                if (!CustomerValidator.IsEmailValid(value)) throw new ArgumentException("Invalid email format.", nameof(value));
                 _email = value;
             }
         }
@@ -44,7 +42,7 @@ namespace Topologic.BookStore.Framework.Models
             get => _firstName;
             set
             {
-                if (string.IsNullOrEmpty(value)) throw new ArgumentException("First name cannot be empty or null", nameof(value));
+                if (string.IsNullOrEmpty(value)) throw new ArgumentException("First name cannot be empty or null.", nameof(value));
                 _firstName = value;
             }
         }
@@ -53,16 +51,24 @@ namespace Topologic.BookStore.Framework.Models
             get => _lastName;
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Last name cannot be empty or null", nameof(value));
+                if (string.IsNullOrEmpty(value)) throw new ArgumentException("Last name cannot be empty or null", nameof(value));
                 _lastName = value;
             }
         }
-        public Collection<Order> Orders { get; private set; } = new Collection<Order>();
+        public double Wallet { get => _wallet; }
+        public Collection<Order> OrderHistory { get; } = [];
 
-        public bool AddOrder(Order order)
+        public bool AddFundsToWallet(double amountToAdd)
         {
-            if (order == null) return false;
-            Orders.Add(order);
+            if (amountToAdd <= 0) throw new ArgumentException("Cannot add zero or negative balanse", nameof(amountToAdd));
+            _wallet += amountToAdd;
+            return true;
+        }
+
+        public bool AddToOrderHistory(Order order)
+        {
+            if(order is null) throw new ArgumentNullException(nameof(order), "Order cannot be null");
+            OrderHistory.Add(order);
             return true;
         }
 

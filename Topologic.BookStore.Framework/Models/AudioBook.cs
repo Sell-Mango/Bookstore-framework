@@ -11,15 +11,15 @@ namespace Topologic.BookStore.Framework.Models
             Duration = duration;
             Narrator = narrator;
         }
-        public AudioBook(string title, string isbn, double price, TimeSpan duration, string narrator, params string[] authorNames)
-            : base(title, isbn, price, authorNames)
+        public AudioBook(string title, string isbn, double price, TimeSpan duration, string narrator, string authorName)
+            : base(title, isbn, price, authorName)
         {
             Duration = duration;
             Narrator = narrator;
         }
 
-        public AudioBook(string title, string isbn, double price, TimeSpan duration, string narrator, string[] authorNames, string description, string language, string publisher, DateTime releaseDate)
-            : base(title, isbn, price, authorNames, description, language, publisher, releaseDate)
+        public AudioBook(string title, string isbn, double price, TimeSpan duration, string narrator, string authorName, string description, string language, string publisher, DateTime releaseDate)
+            : base(title, isbn, price, authorName, description, language, publisher, releaseDate)
         {
             Duration = duration;
             Narrator = narrator;
@@ -39,6 +39,5 @@ namespace Topologic.BookStore.Framework.Models
         }
 
         public string Narrator { get; set; } = string.Empty;
-        
     }
 }

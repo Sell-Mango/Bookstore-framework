@@ -13,14 +13,14 @@ namespace Topologic.BookStore.Framework.Models
             FileSize = fileSize;
         }
 
-        public EBook(string title, string isbn, double fileSize, double price, params string[] authorNames)
-            : base(title, isbn, price, authorNames)
+        public EBook(string title, string isbn, double fileSize, double price, string authorName)
+            : base(title, isbn, price, authorName)
         {
             FileSize = fileSize;
         }
 
-        public EBook(string title, string isbn, double fileSize, double price, string[] authorNames, string description, string language, string publisher, DateTime releaseDate)
-            : base(title, isbn, price, authorNames, description, language, publisher, releaseDate)
+        public EBook(string title, string isbn, double fileSize, double price, string authorName, string description, string language, string publisher, DateTime releaseDate)
+            : base(title, isbn, price, authorName, description, language, publisher, releaseDate)
         {
             FileSize = fileSize;
         }
