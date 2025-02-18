@@ -1,7 +1,7 @@
 ﻿using Topologic.BookStore.Framework.Managers;
 using Topologic.BookStore.Framework.Models;
 
-namespace Topologic.BookStore.UnitTests.Managers
+namespace Topologic.BookStoreFramework.UnitTests.Managers
 {
     [TestClass]
     public class InventoryManagerAddBookTests
@@ -15,8 +15,8 @@ namespace Topologic.BookStore.UnitTests.Managers
         private AudioBook _audioBook1;
         private AudioBook _audioBook2;
         private EBook _eBook1;
-        
-        
+
+
         [TestInitialize]
         public void Setup()
         {
@@ -102,7 +102,7 @@ namespace Topologic.BookStore.UnitTests.Managers
             Assert.AreEqual(expectedMessage, result);
         }
 
-       [TestMethod]
+        [TestMethod]
         public void AddBook_AddMultipleBooks_ShouldAddMultipleItemsToInventory()
         {
             // Arrange

@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Topologic.BookStore.Framework.Utilities
+namespace Topologic.BookStoreFramework.Utilities
 {
     public static class IsbnValidator
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Topologic.BookStore.Framework.Managers;
 using Topologic.BookStore.Framework.Models;
 
-namespace Topologic.BookStore.UnitTests.Models
+namespace Topologic.BookStoreFramework.UnitTests.Models
 {
     [TestClass]
     public class BookTests

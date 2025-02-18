@@ -1,8 +1,7 @@
-﻿
-using Topologic.BookStore.Framework.Managers;
+﻿using Topologic.BookStore.Framework.Managers;
 using Topologic.BookStore.Framework.Models;
 
-namespace Topologic.BookStore.UnitTests.Managers
+namespace Topologic.BookStoreFramework.UnitTests.Managers
 {
     [TestClass]
     public class ShoppingCartTests

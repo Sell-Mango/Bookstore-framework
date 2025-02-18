@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Topologic.BookStore.Framework.Utilities
+namespace Topologic.BookStoreFramework.Utilities
 {
     public static class CustomerValidator
     {

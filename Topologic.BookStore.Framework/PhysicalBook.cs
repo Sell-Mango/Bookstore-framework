@@ -1,4 +1,6 @@
 ﻿
+using Topologic.BookStoreFramework;
+
 namespace Topologic.BookStore.Framework.Models
 {
     public class PhysicalBook : Book

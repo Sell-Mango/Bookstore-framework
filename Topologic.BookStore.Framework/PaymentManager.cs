@@ -1,6 +1,4 @@
-﻿using Topologic.BookStore.Framework.Models;
-
-namespace Topologic.BookStore.Framework.Managers
+﻿namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// A manager for handling payment, Must provide an <see cref="InventoryManager"/> for checking against items in stock before a customer can purchase orders.
@@ -33,8 +31,8 @@ namespace Topologic.BookStore.Framework.Managers
         {
             ArgumentNullException.ThrowIfNull(customer);
             ArgumentNullException.ThrowIfNull(currentShoppingCart);
-            if(currentShoppingCart.ItemsInCart.Count < 1) throw new ArgumentException("Shoopping cart is empty", nameof(currentShoppingCart));
-            
+            if (currentShoppingCart.ItemsInCart.Count < 1) throw new ArgumentException("Shoopping cart is empty", nameof(currentShoppingCart));
+
             if (!customer.CustomerId.Equals(currentShoppingCart.CustomerId)) throw new ArgumentException("Invalid user", nameof(currentShoppingCart));
             return true;
         }
@@ -50,7 +48,7 @@ namespace Topologic.BookStore.Framework.Managers
         public bool PurchaseOrder(Customer customer, ShoppingCart currentShoppingCart)
         {
             double amountToPay = currentShoppingCart.CalculateSubTotal();
-            if(customer.Wallet >= amountToPay)
+            if (customer.Wallet >= amountToPay)
             {
                 var order = new Order(
                     customer.CustomerId,
@@ -60,7 +58,7 @@ namespace Topologic.BookStore.Framework.Managers
                 );
 
                 customer.AddToOrderHistory(order);
-                
+
                 foreach (var bookInCartX in currentShoppingCart.ItemsInCart)
                 {
                     InventoryManager.RemoveBook(bookInCartX.Key, bookInCartX.Value);

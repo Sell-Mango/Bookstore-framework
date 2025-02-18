@@ -1,5 +1,4 @@
-﻿
-using Topologic.BookStore.Framework.Managers;
+﻿using Topologic.BookStoreFramework;
 
 namespace Topologic.BookStore.Framework.Models
 {

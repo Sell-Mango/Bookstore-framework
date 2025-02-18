@@ -4,15 +4,16 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Topologic.BookStore.Framework.Models;
 
-namespace Topologic.BookStore.Framework.Managers
+namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// A manager for storing Books derived from the Book class.
     /// </summary>
     public class InventoryManager
     {
+        //public readonly ReadOnlyDictionary<Book, int> inventory => _inventory.asreadonly()
+        //private Dictionary<Book, Int> _inventory = [];
         private readonly Dictionary<Book, int> _inventory = [];
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace Topologic.BookStore.Framework.Managers
         public BookActionMessage AddBook(Book book, int numOfCopies = 1)
         {
             ArgumentNullException.ThrowIfNull(book, "Cannot be null");
-            if(numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Cannot add zero books to Inventory");
+            if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Cannot add zero books to Inventory");
 
             if (!Inventory.TryAdd(book, numOfCopies))
             {
