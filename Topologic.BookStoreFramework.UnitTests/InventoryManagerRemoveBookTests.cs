@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Topologic.BookStore.Framework.Managers;
-using Topologic.BookStore.Framework.Models;
-
-namespace Topologic.BookStoreFramework.UnitTests.Managers
+﻿namespace Topologic.BookStoreFramework.UnitTests
 {
     [TestClass]
     public class InventoryManagerRemoveBookTests

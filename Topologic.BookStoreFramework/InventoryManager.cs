@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Topologic.BookStoreFramework
+﻿namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// A manager for storing Books derived from the Book class.

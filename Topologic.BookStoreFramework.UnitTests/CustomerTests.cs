@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Topologic.BookStore.Framework.Models;
-
-namespace Topologic.BookStoreFramework.UnitTests.Models
+﻿namespace Topologic.BookStoreFramework.UnitTests
 {
     [TestClass]
     public class CustomerTests

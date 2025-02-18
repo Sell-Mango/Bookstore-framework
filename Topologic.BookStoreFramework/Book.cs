@@ -1,7 +1,6 @@
-﻿
-using Topologic.BookStore.Framework.Utilities;
+﻿using Topologic.BookStoreFramework.Utilities;
 
-namespace Topologic.BookStore.Framework.Models
+namespace Topologic.BookStoreFramework
 {
 
     public abstract class Book : IEquatable<Book>

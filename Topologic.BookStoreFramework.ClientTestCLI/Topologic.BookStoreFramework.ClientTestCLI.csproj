@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Topologic.BookStore.Framework\Topologic.BookStoreFramework.csproj" />
+    <ProjectReference Include="..\Topologic.BookStoreFramework\Topologic.BookStoreFramework.csproj" />
   </ItemGroup>
 
 </Project>

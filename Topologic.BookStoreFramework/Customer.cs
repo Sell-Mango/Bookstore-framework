@@ -1,8 +1,7 @@
-﻿
-using System.Collections.ObjectModel;
-using Topologic.BookStore.Framework.Utilities;
+﻿using System.Collections.ObjectModel;
+using Topologic.BookStoreFramework.Utilities;
 
-namespace Topologic.BookStore.Framework.Models
+namespace Topologic.BookStoreFramework
 {
     public class Customer
     {

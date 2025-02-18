@@ -1,6 +1,4 @@
-﻿using Topologic.BookStoreFramework;
-
-namespace Topologic.BookStore.Framework.Models
+﻿namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// 
