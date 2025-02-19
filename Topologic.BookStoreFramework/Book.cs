@@ -15,7 +15,7 @@ namespace Topologic.BookStoreFramework
         private string _description;
 
         /// <summary>
-        /// Creates a new instance of a Book class with valid ISBN only (minimal constructor).
+        /// Creates a new instance of a <see cref="Book"/> class with valid ISBN only (minimal constructor).
         /// </summary>
         /// <param name="isbn">A valid ISBN for the Book, cannot be changed later.</param>
         /// <exception cref="ArgumentException">Thrown when ISBN is invalid.</exception>
@@ -29,7 +29,7 @@ namespace Topologic.BookStoreFramework
         }
 
         /// <summary>
-        /// Creates a new instance of a Book class with basic information.
+        /// Creates a new instance of a <see cref="Book"/> class with basic information.
         /// </summary>
         /// <param name="isbn">A valid ISBN for the Book, cannot be changed later.</param>
         /// <param name="title">Title of the book.</param>
@@ -45,7 +45,7 @@ namespace Topologic.BookStoreFramework
         }
 
         /// <summary>
-        /// Creates a new instance of a Book class with all information (advanded constructor).
+        /// Creates a new instance of a <see cref="Book"/> class with all information (advanded constructor).
         /// </summary>
         /// <param name="title">Title of the book.</param>
         /// <param name="isbn">A valid ISBN for the Book, cannot be changed later.</param>

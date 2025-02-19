@@ -3,13 +3,14 @@ namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// Represents an a digital book, derived from <see cref="Book"/> class.
+    /// Can be added to the inventory of a <see cref="InventoryManager"/> and can be bought by a <see cref="Customer"/>."/>
     /// </summary>
     public class EBook : Book
     {
         private double _fileSize;
 
         /// <summary>
-        /// Creates a new instance of a EBook class with valid ISBN only (minimal constructor).
+        /// Creates a new instance of a <see cref="EBook"/> class with valid ISBN only (minimal constructor).
         /// </summary>
         /// <param name="isbn">A valid ISBN for the EBook, cannot be changed later.</param>
         /// <remarks>Exceptions are handled by the base <see cref="Book"/> class.</remarks>
@@ -20,7 +21,7 @@ namespace Topologic.BookStoreFramework
         }
 
         /// <summary>
-        /// Creates a new instance of an EBook class with basic information.
+        /// Creates a new instance of an <see cref="EBook"/> class with basic information.
         /// </summary>
         /// <param name="isbn">A valid ISBN for the e-book, cannot be changed later.</param>
         /// <param name="title">Title of the e-book.</param>
@@ -34,7 +35,7 @@ namespace Topologic.BookStoreFramework
         }
 
         /// <summary>
-        /// Creates a new instance of an EBook class with all information (advanded constructor).
+        /// Creates a new instance of an <see cref="EBook"/> class with all information (advanded constructor).
         /// </summary>
         /// <param name="isbn">A valid ISBN for the e-book, cannot be changed later.</param>
         /// <param name="title">Title of the e-book.</param>
@@ -42,8 +43,8 @@ namespace Topologic.BookStoreFramework
         /// <param name="fileSize">File size of the e-book.</param>
         /// <param name="authorName">Author name for the e-book.</param>
         /// <param name="description">A brief description of the e-book (max <see cref="MAX_DESCRIPTION_LENGTH"/> characters.</param>
-        /// <param name="language">Written language for the e-book.</param>
-        /// <param name="publisher">Publisher for the e-bookk.</param>
+        /// <param name="language">Written language of the e-book.</param>
+        /// <param name="publisher">Publisher of the e-bookk.</param>
         /// <param name="releaseDate">Release date for the e-book.</param>
         /// <remarks>Some exceptions are handled by the base <see cref="Book"/> class.</remarks>
         public EBook(string isbn, string title, double price, double fileSize, string authorName, string description, string language, string publisher, DateTime releaseDate)

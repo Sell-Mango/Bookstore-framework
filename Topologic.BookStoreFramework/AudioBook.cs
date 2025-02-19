@@ -2,13 +2,14 @@
 {
     /// <summary>
     /// Represents an audio book, derived from <see cref="Book"/>.
+    /// Can be added to the inventory of a <see cref="InventoryManager"/> and can be bought by a <see cref="Customer"/>."/>
     /// </summary>
     public class AudioBook : Book
     {
         private TimeSpan _duration;
 
         /// <summary>
-        /// Creates a new instance of a AudioBook class with valid ISBN only (minimal constructor).
+        /// Creates a new instance of a <see cref="AudioBook"/> class with valid ISBN only (minimal constructor).
         /// </summary>
         /// <param name="isbn">A valid ISBN for the audio book, cannot be changed later.</param>
         /// <remarks>Exceptions are handled by the base <see cref="Book"/> class.</remarks>
@@ -18,12 +19,12 @@
         }
 
         /// <summary>
-        /// Creates a new instance of an AudioBook class with basic information.
+        /// Creates a new instance of an <see cref="AudioBook"/> class with basic information.
         /// </summary>
         /// <param name="isbn">A valid ISBN for the audio book, cannot be changed later.</param>
         /// <param name="title">Title of the audio book.</param>
         /// <param name="price">Price of the audio book.</param>
-        /// <param name="duration">Duration for the audio book.</param>
+        /// <param name="duration">Duration of the audio book.</param>
         /// <param name="narrator">Narrator name of the audio book.</param>
         /// <remarks>Some exceptions are handled by the base <see cref="Book"/> class.</remarks>
         public AudioBook(string isbn, string title, double price, TimeSpan duration, string narrator) 
@@ -34,7 +35,7 @@
         }
 
         /// <summary>
-        /// Creates a new instance of an AudioBook class with all information (advanded constructor).
+        /// Creates a new instance of an <see cref="AudioBook"/> class with all information (advanded constructor).
         /// </summary>
         /// <param name="isbn">A valid ISBN for the audio book, cannot be changed later.</param>
         /// <param name="title">Title of the audio book.</param>
@@ -44,7 +45,7 @@
         /// <param name="authorName">Author name of the audio book.</param>
         /// <param name="description">A brief description of the audio book (max <see cref="MAX_DESCRIPTION_LENGTH"/> characters.</param>
         /// <param name="language">Written language for the audio book.</param>
-        /// <param name="publisher">Publisher for the audio book.</param>
+        /// <param name="publisher">Publisher of the audio book.</param>
         /// <param name="releaseDate">Release date for the audio book.</param>
         /// <remarks>Some exceptions are handled by the base <see cref="Book"/> class.</remarks>
         public AudioBook(string isbn, string title, double price, TimeSpan duration, string narrator, string authorName, string description, string language, string publisher, DateTime releaseDate)

@@ -1,46 +1,53 @@
 ﻿using System.Collections.ObjectModel;
+using Topologic.BookStoreFramework.Utilities;
 
 namespace Topologic.BookStoreFramework
 {
     /// <summary>
-    /// A manager for storing Books derived from the Book class.
+    /// A manager class for storing items in a book store inventory.
+    /// Valid operations include adding, removing, and searching for books.
+    /// Valid types are derived from the <see cref="Book"/> class.
     /// </summary>
     public class InventoryManager
     {
-        private readonly Dictionary<Book, int> _inventory = [];
+        private readonly Dictionary<Book, int> _inventory;
 
         /// <summary>
-        /// Overload #1
-        /// Sets up an empty Inventory for storing Books
+        /// Creates a new instance of an InventoryManager class with an empty inventory.
         /// </summary>
         public InventoryManager()
         {
+            _inventory = [];
         }
 
         /// <summary>
-        /// Overload #2
-        /// Sets up a Inventory by taking in external Inventory
+        /// Creates a new instance of an InventoryManager class with an existing inventory.
+        /// Creates a deep copy of the provided <paramref name="inventory">.
         /// </summary>
-        /// <param name="inventory"></param>
+        /// <param name="inventory">An existing Dictionary of books to be added.</param>
         public InventoryManager(Dictionary<Book, int> inventory)
         {
             _inventory = new Dictionary<Book, int>(inventory) ?? throw new ArgumentNullException(nameof(inventory), "Inventory cannot be null");
         }
 
+        /// <summary>
+        /// Gets the current inventory of the store.
+        /// </summary>
+        /// <value>Dictionary of all books and quantities in inventory.</value>
         public ReadOnlyDictionary<Book, int> Inventory => _inventory.AsReadOnly();
 
         /// <summary>
-        /// Adds a Book to Inventory, numOfCopies times
+        /// Adds a Book to <see cref="Inventory">, or increases the number of copies if already present.
         /// </summary>
-        /// <param name="book"></param>
-        /// <param name="numOfCopies"></param>
-        /// <returns>A <see cref="BookActionMessage"/> based on the outcome</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <param name="book">The book to be added.</param>
+        /// <param name="numOfCopies">Number of copies to be added of given book.</param>
+        /// <returns>A <see cref="BookActionMessage"/> based on the outcome.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if provided <paramref name="book"> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="numOfCopies"/> is zero or negative.</exception>
         public BookActionMessage AddBook(Book book, int numOfCopies = 1)
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
-            if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Cannot add zero books to Inventory");
+            if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Cannot add zero or negative amount books to Inventory");
 
             if (!_inventory.TryAdd(book, numOfCopies))
             {
@@ -51,17 +58,17 @@ namespace Topologic.BookStoreFramework
         }
 
         /// <summary>
-        /// Removes a Book from Inventory, numOfCopies times
+        /// Removes a Book from Inventory, or decreases if number of copies remaining in inventory is greater than 1.
         /// </summary>
-        /// <param name="book"></param>
-        /// <param name="numOfCopies"></param>
-        /// <returns>A <see cref="BookActionMessage"/> based on the outcome</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <param name="book">The book to be removed.</param>
+        /// <param name="numOfCopies">Number of copies to be removed of the given book.</param>
+        /// <returns>A <see cref="BookActionMessage"/> based on the outcome.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if provided <paramref name="book"> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="numOfCopies"/> is zero or negative.</exception>
         public BookActionMessage RemoveBook(Book book, int numOfCopies = 1)
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
-            if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Cannot add zero books to Inventory");
+            if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Cannot remove zero or negative amount books to Inventory");
 
             if (_inventory.TryGetValue(book, out int currentNumOfCopies))
             {
@@ -80,15 +87,15 @@ namespace Topologic.BookStoreFramework
         }
 
         /// <summary>
-        /// Searches for a Book in Inventory by title
+        /// Searches a Book in <see cref="Inventory"/> by a given title.
         /// </summary>
         /// <param name="title"></param>
-        /// <returns>A <see cref="Book"/> that matches the provided title</returns>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <returns>A <see cref="Book"/> that matches the provided title.</returns>
+        /// <exception cref="ArgumentException">Thrown if no books matching <paramref name="title" /> is found for <see cref="Book.Title"/>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="title" /> is null, empty or whitepspace only.</exception>
         public Book FindBookByTitle(string title)
         {
-            ArgumentNullException.ThrowIfNull(title);
+            if(string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(nameof(title), "Title cannot be null or empty");
             foreach (var bookEntryX in Inventory)
             {
                 if (bookEntryX.Key.Title.Equals(title))
@@ -101,13 +108,15 @@ namespace Topologic.BookStoreFramework
         }
 
         /// <summary>
-        /// Searches for a Book in Inventory by ISBN
+        /// Searches a book in <see cref="Inventory"> by ISBN.
         /// </summary>
-        /// <param name="isbn"></param>
-        /// <returns>A <see cref="Book"/> that matches the provided ISBN</returns>
-        /// <exception cref="ArgumentException"></exception>
+        /// <param name="isbn">A valid ISBN.</param>
+        /// <returns>A <see cref="Book"/> that matches the provided ISBN.</returns>
+        /// <exception cref="ArgumentException">Thrown if provided <paramref name="isbn"/> format is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown if no books matching <paramref name="isbn"> is found for <see cref="Book.Isbn"/>.</exception>
         public Book FindBookByIsbn(string isbn)
         {
+            if(!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
             foreach (var bookEntryX in Inventory)
             {
                 if (bookEntryX.Key.Isbn.Equals(isbn))
