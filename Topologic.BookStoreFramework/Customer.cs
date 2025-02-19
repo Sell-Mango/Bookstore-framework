@@ -6,24 +6,27 @@ namespace Topologic.BookStoreFramework
     public class Customer
     {
         private readonly string _customerId;
-        private string _email = string.Empty;
-        private string _firstName = string.Empty;
-        private string _lastName = string.Empty;
-        private double _wallet = 0;
+        private string _email;
+        private string _firstName;
+        private string _lastName;
+        private double _wallet;
 
         public Customer(string email)
         {
             _customerId = Guid.NewGuid().ToString();
             Email = email;
+            _firstName = string.Empty;
+            _lastName = string.Empty;
+            _wallet = 0;
         }
 
         public Customer(string email, string firstName, string lastName)
         {
             _customerId = Guid.NewGuid().ToString();
             Email = email;
-
             FirstName = firstName;
             LastName = lastName;
+            _wallet = 0;
         }
 
 
@@ -32,6 +35,7 @@ namespace Topologic.BookStoreFramework
             get => _email;
             set
             {
+                if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "Email cannot be null or empty");
                 if (!CustomerValidator.IsEmailValid(value)) throw new ArgumentException("Invalid email format.", nameof(value));
                 _email = value;
             }
@@ -41,7 +45,7 @@ namespace Topologic.BookStoreFramework
             get => _firstName;
             set
             {
-                if (string.IsNullOrEmpty(value)) throw new ArgumentException("First name cannot be empty or null.", nameof(value));
+                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "First name cannot be empty or null.");
                 _firstName = value;
             }
         }
@@ -50,7 +54,7 @@ namespace Topologic.BookStoreFramework
             get => _lastName;
             set
             {
-                if (string.IsNullOrEmpty(value)) throw new ArgumentException("Last name cannot be empty or null", nameof(value));
+                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "Last name cannot be empty or null");
                 _lastName = value;
             }
         }
@@ -60,13 +64,15 @@ namespace Topologic.BookStoreFramework
         public bool AddFundsToWallet(double amountToAdd)
         {
             if (amountToAdd <= 0) throw new ArgumentException("Cannot add zero or negative balanse", nameof(amountToAdd));
+
             _wallet += amountToAdd;
             return true;
         }
 
         public bool AddToOrderHistory(Order order)
         {
-            if(order is null) throw new ArgumentNullException(nameof(order), "Order cannot be null");
+            ArgumentNullException.ThrowIfNull(order, nameof(order));
+
             OrderHistory.Add(order);
             return true;
         }

@@ -1,13 +1,13 @@
-﻿namespace Topologic.BookStoreFramework
+﻿using System.Collections.ObjectModel;
+
+namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// 
     /// </summary>
     public class ShoppingCart
     {
-        private readonly InventoryManager _inventoryManager;
         private readonly Dictionary<Book, int> _itemsInCart;
-        private readonly string _customerId;
 
         /// <summary>
         /// 
@@ -17,14 +17,14 @@
         /// <exception cref="ArgumentNullException"></exception>
         public ShoppingCart(InventoryManager inventoryManager, string customerId)
         {
-            _inventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager), "Inventory cannot be null");
-            _customerId = customerId ?? throw new ArgumentNullException(nameof(customerId), "Customer cannot be null");
+            InventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager), "Inventory cannot be null");
+            CustomerId = customerId ?? throw new ArgumentNullException(nameof(customerId), "Customer cannot be null");
             _itemsInCart = [];
         }
 
-        public Dictionary<Book, int> ItemsInCart { get => _itemsInCart; }
-        public InventoryManager InventoryManager { get => _inventoryManager; }
-        public string CustomerId { get => _customerId; }
+        public ReadOnlyDictionary<Book, int> ItemsInCart => _itemsInCart.AsReadOnly();
+        public InventoryManager InventoryManager { get; private set; }
+        public string CustomerId { get; private set; }
 
         /// <summary>
         /// Adds a <see cref="Book"/> to cart times
@@ -35,22 +35,21 @@
         /// <exception cref="ArgumentException"></exception>
         public BookActionMessage AddToCart(Book book, int numOfCopies = 1)
         {
-            if (numOfCopies <= 0) 
-                throw new ArgumentException("Copies to add cannot be zero or negative", nameof(numOfCopies));
-            if (!InventoryManager.Inventory.TryGetValue(book, out var copiesInInventory)) 
-                throw new ArgumentException("Book does not exist", nameof(numOfCopies));
-            if (numOfCopies > copiesInInventory)
-                throw new ArgumentException("Quantity exceeds whats in stock", nameof(numOfCopies));
-            if (ItemsInCart.ContainsKey(book) && ItemsInCart[book] + numOfCopies > copiesInInventory)
-                throw new ArgumentException("Quantity exceeds whats in stock", nameof(numOfCopies));
+            if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Copies to add cannot be zero or negative");
+            
+            if (!InventoryManager.Inventory.TryGetValue(book, out var copiesInInventory)) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Book does not exist");
+            
+            if (numOfCopies > copiesInInventory) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Quantity exceeds whats in stock");
+            
+            if (_itemsInCart.ContainsKey(book) && ItemsInCart[book] + numOfCopies > copiesInInventory) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Quantity exceeds whats in stock");
 
-            if (ItemsInCart.TryAdd(book, numOfCopies))
+            if (_itemsInCart.TryAdd(book, numOfCopies))
             {
                 return BookActionMessage.Added;
             }
             else
             {
-                ItemsInCart[book] += numOfCopies;
+                _itemsInCart[book] += numOfCopies;
                 return BookActionMessage.Increased;
             }
         }
@@ -64,18 +63,18 @@
         /// <exception cref="ArgumentException"></exception>
         public BookActionMessage RemoveFromCart(Book book, int copiesToRemove = 1)
         {
-            if (copiesToRemove <= 0) throw new ArgumentException("Copies to remove cannot be zero or negative", nameof(copiesToRemove));
+            if (copiesToRemove < 1) throw new ArgumentOutOfRangeException(nameof(copiesToRemove), "Copies to remove cannot be zero or negative");
 
-            if(ItemsInCart.TryGetValue(book, out int copiesInCart))
+            if(_itemsInCart.TryGetValue(book, out int copiesInCart))
             {
                 if(copiesInCart > copiesToRemove)
                 {
-                    ItemsInCart[book] -= copiesToRemove;
+                    _itemsInCart[book] -= copiesToRemove;
                     return BookActionMessage.Decreased;
                 }
                 else
                 {
-                    ItemsInCart.Remove(book);
+                    _itemsInCart.Remove(book);
                     return BookActionMessage.Removed;
                 }
             }
@@ -103,7 +102,7 @@
         /// </summary>
         public void ClearCart()
         {
-            ItemsInCart.Clear();
+            _itemsInCart.Clear();
         }
     }
 }

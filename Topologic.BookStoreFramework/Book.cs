@@ -3,57 +3,64 @@
 namespace Topologic.BookStoreFramework
 {
 
+    /// <summary>
+    /// Represents a base class for all books in the framework. 
+    /// Cannot instantiate this class directly, use one of the derived like <see cref="PhysicalBook"/> and <see cref="AudioBook"/>.
+    /// </summary>
     public abstract class Book : IEquatable<Book>
     {
-        private string _title = string.Empty;
+        private string _title;
         private readonly string _isbn;
         private double _price;
-        private string _description = string.Empty;
+        private string _description;
 
         /// <summary>
-        /// Overload #1
-        /// Only required fields to handle a Book
+        /// Creates a new instance of a Book class with valid ISBN only (minimal constructor).
         /// </summary>
-        /// <param name="title"></param>
-        /// <param name="isbn"></param>
-        /// <param name="price"></param>
-        /// <exception cref="ArgumentException"></exception>
-        protected Book(string title, string isbn, double price)
+        /// <param name="isbn">A valid ISBN for the Book, cannot be changed later.</param>
+        /// <exception cref="ArgumentException">Thrown when ISBN is invalid.</exception>
+        protected Book(string isbn)
         {
-            Title = title;
-            if(!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
-            _isbn = isbn;
-
-            Price = price;   
-        }
-
-        /// <summary>
-        /// Overload 2#
-        /// 
-        /// </summary>
-        /// <param name="title"></param>
-        /// <param name="isbn"></param>
-        /// <param name="price"></param>
-        /// <param name="authorName"></param>
-        /// <exception cref="ArgumentException"></exception>
-        protected Book(string title, string isbn, double price, string authorName)
-        {
-
-            Title = title;
             if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
             _isbn = isbn;
-             
-            Price = price;
-            AuthorName = authorName;
-
+            Title = string.Empty;
+            Price = 0;
+            Description = string.Empty;
         }
 
+        /// <summary>
+        /// Creates a new instance of a Book class with basic information.
+        /// </summary>
+        /// <param name="isbn">A valid ISBN for the Book, cannot be changed later.</param>
+        /// <param name="title">Title of the book.</param>
+        /// <param name="price">Price for the book.</param>
+        /// <exception cref="ArgumentException">Thrown when ISBN is invalid.</exception>
+        protected Book(string isbn, string title, double price)
+        {
+            if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            _isbn = isbn;
+            Title = title;
+            Price = price;
+            Description = string.Empty;
+        }
+
+        /// <summary>
+        /// Creates a new instance of a Book class with all information (advanded constructor).
+        /// </summary>
+        /// <param name="title">Title of the book.</param>
+        /// <param name="isbn">A valid ISBN for the Book, cannot be changed later.</param>
+        /// <param name="price">Price for the book.</param>
+        /// <param name="authorName">Author name of the book.</param>
+        /// <param name="description">A brief description of the book (max <see cref="MAX_DESCRIPTION_LENGTH"/> characters.</param>
+        /// <param name="language">Written language for the book.</param>
+        /// <param name="publisher">Publisher for the book.</param>
+        /// <param name="releaseDate">Release date for the book.</param>
+        /// <exception cref="ArgumentException"></exception>
         protected Book(string title, string isbn, double price, string authorName, string description, string language, string publisher, DateTime releaseDate)
         {
-            Title = title;
             if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
             _isbn = isbn;
-            
+            Title = title;
             Price = price;
             AuthorName = authorName;
             Description = description;
@@ -62,20 +69,10 @@ namespace Topologic.BookStoreFramework
             ReleaseDate = releaseDate;
         }
 
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                const int maxTitleLength = 200;
-                if (value.Length > maxTitleLength)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"Title is too long, max {maxTitleLength} characters");
-                }
-                _title = value;
-            }
-        }
-
+        /// <summary>
+        /// Gets the ISBN of the book.
+        /// </summary>
+        /// <value>ISBN of the book.</value>
         public string Isbn { get => _isbn; }
 
         public double Price
@@ -91,41 +88,100 @@ namespace Topologic.BookStoreFramework
             }
         }
 
+        /// <summary>
+        /// Gets the title of the book.
+        /// </summary>
+        /// <value>Title og the book.</value>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when length exceeds <see cref="MAX_TITLE_LENGTH"/> characters.</exception>
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                if (value.Length > MAX_TITLE_LENGTH)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), $"Title is too long, max {MAX_TITLE_LENGTH} characters");
+                }
+                _title = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the author name of the book.
+        /// </summary>
+        /// <value>The book author's name.</value>
         public string AuthorName { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Gets or sets a brief description of the book.
+        /// </summary>
+        /// <value>The book description.</value>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when description exceeds <see cref="MAX_DESCRIPTION_LENGTH"/> characters.</exception>
         public string Description
         {
             get => _description;
             set
             {
-                var maxDescriptionLength = 5000;
-                if (value.Length > maxDescriptionLength)
+                if (value.Length > MAX_DESCRIPTION_LENGTH)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"Description is too long, max {maxDescriptionLength} characters");
+                    throw new ArgumentOutOfRangeException(nameof(value), $"Description is too long, max {MAX_DESCRIPTION_LENGTH} characters");
                 }
                 _description = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the language of the book.
+        /// </summary>
+        /// <value>Language name of the book.</value>
         public string Language { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the publisher of the book.
+        /// </summary>
+        /// <value>Name of the book publisher.</value>
         public string Publisher { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the release date of the book.
+        /// </summary>
+        /// <value>Release date of the book.</value>
         public DateTime ReleaseDate { get; set; } = DateTime.MinValue;
 
-
+        /// <summary>
+        /// Checks if the current book is equal to the comparing book based on <see cref="Isbn"/>.
+        /// </summary>
+        /// <param name="otherBook">The other book object to compare with the current book.</param>
+        /// <returns>True if the current and comparing book have the same <see cref="Isbn"/>, or false.</returns>
         public bool Equals(Book? otherBook)
         {
             return otherBook is not null && otherBook.Isbn == this.Isbn;
         }
 
+        /// <summary>
+        /// Checks if the current book is equal to the comparing book.
+        /// </summary>
+        /// <param name="obj">The book object to compare with the current book.</param>
+        /// <returns>True if the current and comparing book have the same <see cref="Isbn"/>, or false.</returns>
         public override bool Equals(object? obj)
         {
             return Equals(obj as Book);
         }
 
+        /// <summary>
+        /// Gets the hash code of the book based on <see cref="Isbn">
+        /// </summary>
+        /// <returns>A hashcode for the book</returns>
         public override int GetHashCode()
         {
             return Isbn.GetHashCode();
         }
 
+        /// <summary>
+        /// Generates a string representation of main information of the book.
+        /// </summary>
+        /// <returns>A string containg main information for the book such as <see cref="Isbn"/>, <see cref="Title"/>, <see cref="Price"/> if not zero,
+        /// <see cref="AuthorName"/> if not empty and <see cref="ReleaseDate"/> if set.</returns>
         public override string ToString()
         {
             var mainInfo = $"Title: {Title}, ISBN: {Isbn}";
@@ -145,5 +201,7 @@ namespace Topologic.BookStoreFramework
             return mainInfo;
         }
 
+        private const int MAX_TITLE_LENGTH = 200;
+        private const int MAX_DESCRIPTION_LENGTH = 5000;
     }
 }

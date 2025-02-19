@@ -1,4 +1,6 @@
-﻿namespace Topologic.BookStoreFramework
+﻿using System.Collections.ObjectModel;
+
+namespace Topologic.BookStoreFramework
 {
     public class Order
     {
@@ -21,6 +23,6 @@
         public string CustomerId { get => _customerId; }
         public DateTime OrderDateTime { get => _orderDateTime; }
         public double OrderTotal { get => _orderTotal; }
-        public Dictionary<Book, int> OrderedItems { get => _orderedItems; }
+        public ReadOnlyDictionary<Book, int> OrderedItems => _orderedItems.AsReadOnly();
     }
 }

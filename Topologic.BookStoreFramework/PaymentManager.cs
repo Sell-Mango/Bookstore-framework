@@ -5,8 +5,6 @@
     /// </summary>
     public class PaymentManager
     {
-        private readonly InventoryManager _inventoryManager;
-
         /// <summary>
         /// Instansiates a PaymentManager for handling payments.
         /// </summary>
@@ -14,10 +12,10 @@
         /// <exception cref="ArgumentException"></exception>
         public PaymentManager(InventoryManager inventoryManager)
         {
-            _inventoryManager = inventoryManager ?? throw new ArgumentException("Inventory cannot be null", nameof(inventoryManager));
+            InventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager), "Inventory cannot be null");
         }
 
-        public InventoryManager InventoryManager { get => _inventoryManager; }
+        public InventoryManager InventoryManager { get; private set; }
 
         /// <summary>
         /// Validate if correct <see cref="Customer"/> is purchasing items in a <see cref="ShoppingCart"/>
@@ -31,7 +29,7 @@
         {
             ArgumentNullException.ThrowIfNull(customer);
             ArgumentNullException.ThrowIfNull(currentShoppingCart);
-            if (currentShoppingCart.ItemsInCart.Count < 1) throw new ArgumentException("Shoopping cart is empty", nameof(currentShoppingCart));
+            if (currentShoppingCart.ItemsInCart.Count < 1) throw new ArgumentOutOfRangeException(nameof(currentShoppingCart), "Shoopping cart cannot be empty or negative");
 
             if (!customer.CustomerId.Equals(currentShoppingCart.CustomerId)) throw new ArgumentException("Invalid user", nameof(currentShoppingCart));
             return true;
@@ -63,6 +61,8 @@
                 {
                     InventoryManager.RemoveBook(bookInCartX.Key, bookInCartX.Value);
                 }
+
+                currentShoppingCart.ClearCart();
 
                 return true;
 

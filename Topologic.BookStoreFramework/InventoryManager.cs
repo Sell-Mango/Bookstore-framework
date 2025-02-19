@@ -1,12 +1,12 @@
-﻿namespace Topologic.BookStoreFramework
+﻿using System.Collections.ObjectModel;
+
+namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// A manager for storing Books derived from the Book class.
     /// </summary>
     public class InventoryManager
     {
-        //public readonly ReadOnlyDictionary<Book, int> inventory => _inventory.asreadonly()
-        //private Dictionary<Book, Int> _inventory = [];
         private readonly Dictionary<Book, int> _inventory = [];
 
         /// <summary>
@@ -24,11 +24,10 @@
         /// <param name="inventory"></param>
         public InventoryManager(Dictionary<Book, int> inventory)
         {
-            _inventory = inventory;
+            _inventory = new Dictionary<Book, int>(inventory) ?? throw new ArgumentNullException(nameof(inventory), "Inventory cannot be null");
         }
 
-
-        public Dictionary<Book, int> Inventory { get => _inventory; }
+        public ReadOnlyDictionary<Book, int> Inventory => _inventory.AsReadOnly();
 
         /// <summary>
         /// Adds a Book to Inventory, numOfCopies times
@@ -40,12 +39,12 @@
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public BookActionMessage AddBook(Book book, int numOfCopies = 1)
         {
-            ArgumentNullException.ThrowIfNull(book, "Cannot be null");
+            ArgumentNullException.ThrowIfNull(book, nameof(book));
             if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Cannot add zero books to Inventory");
 
-            if (!Inventory.TryAdd(book, numOfCopies))
+            if (!_inventory.TryAdd(book, numOfCopies))
             {
-                Inventory[book] += numOfCopies;
+                _inventory[book] += numOfCopies;
                 return BookActionMessage.Increased;
             }
             return BookActionMessage.Added;
@@ -61,19 +60,19 @@
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public BookActionMessage RemoveBook(Book book, int numOfCopies = 1)
         {
-            ArgumentNullException.ThrowIfNull(book);
+            ArgumentNullException.ThrowIfNull(book, nameof(book));
             if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Cannot add zero books to Inventory");
 
-            if (Inventory.TryGetValue(book, out int currentNumOfCopies))
+            if (_inventory.TryGetValue(book, out int currentNumOfCopies))
             {
                 if (currentNumOfCopies <= numOfCopies)
                 {
-                    Inventory.Remove(book);
+                    _inventory.Remove(book);
                     return BookActionMessage.Removed;
                 }
                 else
                 {
-                    Inventory[book] -= numOfCopies;
+                    _inventory[book] -= numOfCopies;
                     return BookActionMessage.Decreased;
                 }
             }
