@@ -60,5 +60,13 @@ namespace Topologic.BookStoreFramework
         /// </summary>
         /// <value>Dictionary of bought books and their quantities.</value>
         public ReadOnlyDictionary<Book, int> OrderedItems => _orderedItems.AsReadOnly();
+        
+        public override string ToString()
+        {
+            return $"Order ID: {_orderId}, " +
+                $"Customer ID: {_customerId}, " +
+                $"Order Date: {_orderDateTime}, " +
+                $"Order Total: {_orderTotal}";
+        }
     }
 }

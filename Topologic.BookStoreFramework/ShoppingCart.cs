@@ -12,7 +12,7 @@ namespace Topologic.BookStoreFramework
         private readonly Dictionary<Book, int> _itemsInCart;
 
         /// <summary>
-        /// Creates a new instance of a <see cref="ShoppingCart"/> class with an existing inventory manager and customer id."/>
+        /// Creates a new instance of <see cref="ShoppingCart"/> with an existing inventory manager and customer id."/>
         /// </summary>
         /// <param name="inventoryManager"></param>
         /// <param name="customerId"></param>
@@ -47,12 +47,12 @@ namespace Topologic.BookStoreFramework
         /// </summary>
         /// <param name="book">Book existing in <see cref="InventoryManager"> to be added.</param>
         /// <param name="numOfCopies">Number of copies of a <paramref name="book"/> to be added.</param>
-        /// <returns>A <see cref="BookActionMessage"/> based on the outcome.</returns>
+        /// <returns>A <see cref="BookOperationResult"/> based on the outcome.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown in of these cases: 
         /// If <paramref name="numOfCopies"/> is zero or negative.
         /// If <paramref name="book"/> does not exist in <see cref="InventoryManager"/>
         /// If quantity of <paramref name="numOfCopies"/> exceeds stock available in <see cref="InventoryManager"/>.</exception>
-        public BookActionMessage AddToCart(Book book, int numOfCopies = 1)
+        public BookOperationResult AddToCart(Book book, int numOfCopies = 1)
         {
             if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Copies to add cannot be zero or negative");
             
@@ -64,12 +64,12 @@ namespace Topologic.BookStoreFramework
 
             if (_itemsInCart.TryAdd(book, numOfCopies))
             {
-                return BookActionMessage.Added;
+                return BookOperationResult.Added;
             }
             else
             {
                 _itemsInCart[book] += numOfCopies;
-                return BookActionMessage.Increased;
+                return BookOperationResult.Increased;
             }
         }
 
@@ -78,9 +78,9 @@ namespace Topologic.BookStoreFramework
         /// </summary>
         /// <param name="book">Book existing in <see cref="ItemsInCart"> to be removed or decreased.</param>
         /// <param name="copiesToRemove">Number of copies of a <paramref name="book"/> to be removed.</param>
-        /// <returns>A <see cref="BookActionMessage"/> bases on the outcome.</returns>
+        /// <returns>A <see cref="BookOperationResult"/> bases on the outcome.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if copies to remove is zero or negative.</exception>
-        public BookActionMessage RemoveFromCart(Book book, int copiesToRemove = 1)
+        public BookOperationResult RemoveFromCart(Book book, int copiesToRemove = 1)
         {
             if (copiesToRemove < 1) throw new ArgumentOutOfRangeException(nameof(copiesToRemove), "Copies to remove cannot be zero or negative");
 
@@ -89,15 +89,15 @@ namespace Topologic.BookStoreFramework
                 if(copiesInCart > copiesToRemove)
                 {
                     _itemsInCart[book] -= copiesToRemove;
-                    return BookActionMessage.Decreased;
+                    return BookOperationResult.Decreased;
                 }
                 else
                 {
                     _itemsInCart.Remove(book);
-                    return BookActionMessage.Removed;
+                    return BookOperationResult.Removed;
                 }
             }
-            return BookActionMessage.NotFound;
+            return BookOperationResult.NotFound;
         }
 
         /// <summary>

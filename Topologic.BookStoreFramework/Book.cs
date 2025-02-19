@@ -24,7 +24,7 @@ namespace Topologic.BookStoreFramework
             if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
             _isbn = isbn;
             Title = string.Empty;
-            Price = 0;
+            _price = 0;
             Description = string.Empty;
         }
 

@@ -6,7 +6,6 @@
     /// </summary>
     public class PhysicalBook : Book
     {
-        private double _weight;
         private int _totalPages;
         private BookCoverType _bookCoverType;
 
@@ -18,7 +17,6 @@
         public PhysicalBook(string isbn)
             : base(isbn)
         {
-            _weight = 0;
             _totalPages = 0;
         }
 
@@ -28,14 +26,12 @@
         /// <param name="isbn">A valid ISBN for the physical book, cannot be changed later.</param>
         /// <param name="title">Title of the physical book.</param>
         /// <param name="price">Price of the physical book.</param>
-        /// <param name="weight">Weight of the physical book.</param>
         /// <param name="totalPages">Number of total pages of the physical book.</param>
         /// <param name="bookCoverType">Cover type of the physical book.</param>
         /// <remarks>Some exceptions are handled by the base <see cref="Book"/> class.</remarks>
-        public PhysicalBook(string isbn, string title, double price, double weight, int totalPages, BookCoverType bookCoverType)
-            : base(title, isbn, price)
+        public PhysicalBook(string isbn, string title, double price, int totalPages, BookCoverType bookCoverType)
+            : base(isbn, title, price)
         {
-            Weight = weight;
             TotalPages = totalPages;
             BookCoverType = bookCoverType;
         }
@@ -46,7 +42,6 @@
         /// <param name="isbn">A valid ISBN for the physical book, cannot be changed later.</param>
         /// <param name="title">Title of the physical book.</param>
         /// <param name="price">Price of the physical book.</param>
-        /// <param name="weight">Weight of the physical book.</param>
         /// <param name="totalPages">Number of total pages of the physical book.</param>
         /// <param name="bookCoverType">Cover type of the physical book.</param>
         /// <param name="authorName">Author name of the physical book.</param>
@@ -55,31 +50,11 @@
         /// <param name="publisher">Publisher of the physical book.</param>
         /// <param name="releaseDate">Release date for the physical book.</param>
         /// <remarks>Some exceptions are handled by the base <see cref="Book"/> class.</remarks>
-        public PhysicalBook(string title, string isbn, double price, double weight, int totalPages, BookCoverType bookCoverType, string authorName, string description, string language, string publisher, DateTime releaseDate) 
+        public PhysicalBook(string title, string isbn, double price, int totalPages, BookCoverType bookCoverType, string authorName, string description, string language, string publisher, DateTime releaseDate) 
             : base(title, isbn, price, authorName, description, language, publisher, releaseDate)
         {
-            Weight = weight;
             TotalPages = totalPages;
             BookCoverType = bookCoverType;
-        }
-
-        /// <summary>
-        /// Gets or sets the weight of the physical book.
-        /// </summary>
-        /// <value>Weight of the physical book, in kilograms.</value>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if weight is zero or negative.</exception>
-        public double Weight
-        {
-            get => _weight;
-            set
-            {
-                if(value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Weight cannot be zero or a negative");
-
-                }
-                _weight = value;
-            }
         }
 
         /// <summary>

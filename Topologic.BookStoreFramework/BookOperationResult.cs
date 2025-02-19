@@ -4,7 +4,7 @@
     /// Represents a result of an action perfomed on a collection of <see cref="Book"/> objects. 
     /// Commonly used on <see cref="InventoryManager"/> and <see cref="ShoppingCart"/> operations.
     /// </summary>
-    public enum BookActionMessage
+    public enum BookOperationResult
     {
         /// <summary>
         /// No action or undefined status, not allowed in this context.

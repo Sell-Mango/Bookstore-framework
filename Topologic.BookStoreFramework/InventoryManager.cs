@@ -44,7 +44,7 @@ namespace Topologic.BookStoreFramework
         /// <returns>A <see cref="BookActionMessage"/> based on the outcome.</returns>
         /// <exception cref="ArgumentNullException">Thrown if provided <paramref name="book"> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="numOfCopies"/> is zero or negative.</exception>
-        public BookActionMessage AddBook(Book book, int numOfCopies = 1)
+        public BookOperationResult AddBook(Book book, int numOfCopies = 1)
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
             if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Cannot add zero or negative amount books to Inventory");
@@ -52,9 +52,9 @@ namespace Topologic.BookStoreFramework
             if (!_inventory.TryAdd(book, numOfCopies))
             {
                 _inventory[book] += numOfCopies;
-                return BookActionMessage.Increased;
+                return BookOperationResult.Increased;
             }
-            return BookActionMessage.Added;
+            return BookOperationResult.Added;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Topologic.BookStoreFramework
         /// <returns>A <see cref="BookActionMessage"/> based on the outcome.</returns>
         /// <exception cref="ArgumentNullException">Thrown if provided <paramref name="book"> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="numOfCopies"/> is zero or negative.</exception>
-        public BookActionMessage RemoveBook(Book book, int numOfCopies = 1)
+        public BookOperationResult RemoveBook(Book book, int numOfCopies = 1)
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
             if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Cannot remove zero or negative amount books to Inventory");
@@ -75,15 +75,15 @@ namespace Topologic.BookStoreFramework
                 if (currentNumOfCopies <= numOfCopies)
                 {
                     _inventory.Remove(book);
-                    return BookActionMessage.Removed;
+                    return BookOperationResult.Removed;
                 }
                 else
                 {
                     _inventory[book] -= numOfCopies;
-                    return BookActionMessage.Decreased;
+                    return BookOperationResult.Decreased;
                 }
             }
-            return BookActionMessage.NotFound;
+            return BookOperationResult.NotFound;
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Topologic.BookStoreFramework
         public Book FindBookByTitle(string title)
         {
             if(string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(nameof(title), "Title cannot be null or empty");
-            foreach (var bookEntryX in Inventory)
+            foreach (var bookEntryX in _inventory)
             {
                 if (bookEntryX.Key.Title.Equals(title))
                 {

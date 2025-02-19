@@ -28,7 +28,7 @@
         /// <param name="narrator">Narrator name of the audio book.</param>
         /// <remarks>Some exceptions are handled by the base <see cref="Book"/> class.</remarks>
         public AudioBook(string isbn, string title, double price, TimeSpan duration, string narrator) 
-            : base(title, isbn, price)
+            : base(isbn, title, price)
         {
             Duration = duration;
             Narrator = narrator;
