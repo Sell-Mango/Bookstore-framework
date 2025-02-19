@@ -18,13 +18,13 @@
         }
 
         [TestMethod]
-        public void AddFundsToWallet_AddNegativeFunds_ThrowsArgumentException()
+        public void AddFundsToWallet_AddNegativeFunds_ArgumentOutOfRangeException()
         {
             // Arrange
             Customer customer1 = new("bogaloo@again.no");
 
             // Act and Assert
-            Assert.ThrowsException<ArgumentException>(() => customer1.AddFundsToWallet(-42));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => customer1.AddFundsToWallet(-42));
 
         }
         [TestMethod]

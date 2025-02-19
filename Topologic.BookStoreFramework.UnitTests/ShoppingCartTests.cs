@@ -18,9 +18,9 @@
             _inventoryManager = new();
             _shoppingCart = new(_inventoryManager, _customer.CustomerId);
 
-            _book1 = new PhysicalBook("Lord of the Rings: Two Towers", "978-3-8747-4427-0", 299, 3.25, 322);
-            _book2 = new PhysicalBook("Witcher", "978-0-7330-7673-2", 370, 3.5, 456, "Navn Navnesen");
-            _book3 = new PhysicalBook("Snømannen", "0-3599-3099-9", 599, 4.345, 588, "Ola Normann", "Some description", "Nb-No", "Egmont", new DateTime(2011, 05, 12));
+            _book1 = new PhysicalBook("978-3-8747-4427-0", "Lord of the Rings: Two Towers", 299, 322, BookCoverType.Hardcover);
+            _book2 = new PhysicalBook("978-0-7330-7673-2", "Witcher", 370, 456, BookCoverType.Hardcover);
+            _book3 = new PhysicalBook("0-3599-3099-9", "Snømannen", 599, 588, BookCoverType.Paperback, "Ola Normann", "Some description", "Nb-No", "Egmont", new DateTime(2011, 05, 12));
 
             _inventoryManager.AddBook(_book1, 2);
             _inventoryManager.AddBook(_book2, 8);
@@ -31,7 +31,7 @@
         public void AddToCart_AddingBooksIfInStockToCart_ShouldAddBookToCart()
         {
             // Arrange
-            var excpectedMessage = BookActionMessage.Added;
+            var excpectedMessage = BookOperationResult.Added;
 
             // Act
             var result = _shoppingCart.AddToCart(_book1);
@@ -44,7 +44,7 @@
         public void AddToCart_AddingExistingBookToCart_ShouldIncreaseQuantityOfBook()
         {
             // Arrange
-            var excpectedMessage = BookActionMessage.Increased;
+            var excpectedMessage = BookOperationResult.Increased;
             _shoppingCart.AddToCart(_book1);
 
             // Act
@@ -55,21 +55,21 @@
         }
 
         [TestMethod]
-        public void AddToCart_AddingMoreBooksThanAvailableInStock_ThrowsArgumentException()
+        public void AddToCart_AddingMoreBooksThanAvailableInStock_ArgumentOutOfRangeException()
         {
             // Arrange
             _shoppingCart.AddToCart(_book1, 2);
 
             // Act and Assert
-            Assert.ThrowsException<ArgumentException>(() => _shoppingCart.AddToCart(_book1, 1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _shoppingCart.AddToCart(_book1, 1));
 
         }
 
         [TestMethod]
-        public void AddToCart_AddNegativeQuantityToCart_ThrowsArgumentNullException()
+        public void AddToCart_AddNegativeQuantityToCart_ThrowsArgumenOutOfRangeException()
         {
             // Act and Assert
-            Assert.ThrowsException<ArgumentException>(() => _shoppingCart.AddToCart(_book1, -1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _shoppingCart.AddToCart(_book1, -1));
         }
 
 
@@ -77,7 +77,7 @@
         public void RemoveFromCart_RemoveBookFromCart_ShouldRemoveBookIfLast()
         {
             // Arrange
-            var expectedMessage = BookActionMessage.Removed;
+            var expectedMessage = BookOperationResult.Removed;
             _shoppingCart.AddToCart(_book1);
 
             // Act
@@ -91,7 +91,7 @@
         public void RemoveFromCart_DecreaseQuantityIfNotLast_ShouldKeepBookIfNotLast()
         {
             // Arrange
-            var expectedMessage = BookActionMessage.Decreased;
+            var expectedMessage = BookOperationResult.Decreased;
             _shoppingCart.AddToCart(_book1, 2);
 
             // Act
@@ -106,7 +106,7 @@
         public void RemoveFromCart_RemoveBookThatDoesntExist_ReturnMessageNotFound()
         {
             // Arrange
-            var expectedMessage = BookActionMessage.NotFound;
+            var expectedMessage = BookOperationResult.NotFound;
             // Act
             var result = _shoppingCart.RemoveFromCart(_book3);
 
@@ -115,10 +115,10 @@
         }
 
         [TestMethod]
-        public void RemoveFromCart_AddNegativeQuantityToCart_ThrowsArgumentNullException()
+        public void RemoveFromCart_AddNegativeQuantityToCart_ArgumentOutOfRangeException()
         {
             // Act and Assert
-            Assert.ThrowsException<ArgumentException>(() => _shoppingCart.RemoveFromCart(_book1, -1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _shoppingCart.RemoveFromCart(_book1, -1));
         }
 
         [TestMethod]

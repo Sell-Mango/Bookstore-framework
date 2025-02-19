@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Text;
 
 namespace Topologic.BookStoreFramework
 {
@@ -63,10 +64,18 @@ namespace Topologic.BookStoreFramework
         
         public override string ToString()
         {
-            return $"Order ID: {_orderId}, " +
-                $"Customer ID: {_customerId}, " +
-                $"Order Date: {_orderDateTime}, " +
-                $"Order Total: {_orderTotal}";
+            StringBuilder sb = new();
+
+            foreach(var item in OrderedItems)
+            {
+                sb.AppendLine($"Book title: {item.Key.Title}, Quantity: {item.Value}");
+            }
+
+            return $"Order ID: {_orderId}, \n" +
+                $"Customer ID: {_customerId}, \n" +
+                $"Order Date: {_orderDateTime}, \n" +
+                $"Order Total: {_orderTotal}, \n" +
+                $"Ordered Items: {sb}";
         }
     }
 }

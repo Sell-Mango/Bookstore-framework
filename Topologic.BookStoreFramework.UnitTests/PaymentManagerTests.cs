@@ -20,9 +20,9 @@
             _shoppingCart = new(_inventoryManager, _customer.CustomerId);
             _paymentManager = new(_inventoryManager);
 
-            _book1 = new PhysicalBook("Lord of the Rings: Two Towers", "978-3-8747-4427-0", 299, 3.25, 322);
-            _book2 = new PhysicalBook("Witcher", "978-0-7330-7673-2", 370, 3.5, 456, "Navn Navnesen");
-            _book3 = new PhysicalBook("Snømannen", "0-3599-3099-9", 599, 4.345, 588, "Ola Normann", "Some description", "Nb-No", "Egmont", new DateTime(2011, 05, 12));
+            _book1 = new PhysicalBook("978-3-8747-4427-0", "Lord of the Rings: Two Towers", 299, 322, BookCoverType.Hardcover);
+            _book2 = new PhysicalBook("978-0-7330-7673-2", "Witcher", 370, 456, BookCoverType.Paperback);
+            _book3 = new PhysicalBook("0-3599-3099-9", "Snømannen",  599, 588, BookCoverType.Spiral, "Ola Normann", "Some description", "Nb-No", "Egmont", new DateTime(2011, 05, 12));
 
             _inventoryManager.AddBook(_book1, 2);
             _inventoryManager.AddBook(_book2, 8);

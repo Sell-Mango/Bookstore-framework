@@ -69,10 +69,10 @@ class Program
         {
             // Checkout
             paymentManager.PurchaseOrder(customer1, shoppingCartCustomer1);
-            
+ 
         }
 
-        // 7. Print order history
+        // 7. Print the order made by customer1
         Console.WriteLine(customer1.OrderHistory[0]);
 
     }

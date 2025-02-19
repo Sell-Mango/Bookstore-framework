@@ -18,15 +18,15 @@
         public void Setup()
         {
             _inventoryManager = new InventoryManager();
-            _book1 = new PhysicalBook("Lord of the Rings: Two Towers", "978-3-8747-4427-0", 299, 3.25, 322);
-            _book2 = new PhysicalBook("Witcher", "978-0-7330-7673-2", 370, 3.5, 456, "Navn Navnesen");
-            _book3 = new PhysicalBook("Snømannen", "0-3599-3099-9", 599, 4.345, 588, "Ola Normann", "Some description", "Nb-No", "Egmont", new DateTime(2011, 05, 12));
-            _book4 = new PhysicalBook("Lord of the Rings: Two Towers", "978-3-8747-4427-0", 299, 3.25, 322); // Duplicate of book1
-            _book5 = new PhysicalBook("Lord of the Rings: Two Towers", "978-3-8747-4427-0", 299, 3.25, 322); // Duplicate of book1
+            _book1 = new PhysicalBook("978-7-3218-6224-1");
+            _book2 = new PhysicalBook("978-7-7139-4939-0", "Lord of the Rings: Two Towers", 299, 322, BookCoverType.Hardcover);
+            _book3 = new PhysicalBook("0-6341-6967-X", "Snømannen", 599, 588, BookCoverType.Paperback, "Ola Normann", "Some description", "Nb-No", "Egmont", new DateTime(2011, 05, 12));
+            _book4 = new PhysicalBook("978-7-7139-4939-0"); // Duplicate of book2
+            _book5 = new PhysicalBook("978-7-7139-4939-0"); // Duplicate of book2
 
-            _audioBook1 = new AudioBook("Heksene", "978-0-4980-8315-0", 199, new TimeSpan(5, 6, 22), "Navn Navnesen");
-            _audioBook2 = new AudioBook("A journey to the west", "978-9-0154-2640-1", 329, new TimeSpan(8, 33, 12), "Ola Normann", "Roald Dahl");
-            _eBook1 = new EBook("ETitle1", "0-4177-8938-6", 299, 12);
+           _audioBook1 = new AudioBook("978-0-4980-8315-0", "Heksene", 199, new TimeSpan(5, 6, 22), "Navn Navnesen");
+           _audioBook2 = new AudioBook("0-2676-2756-4", "A journey to the west", 329, new TimeSpan(8, 33, 12), "Roald Dahl");
+           _eBook1 = new EBook("0-4177-8938-6", "ETitle1", 299, 12);
         }
 
         [TestMethod]
@@ -36,23 +36,10 @@
             int expectedValue = 1;
 
             // Act
-            BookActionMessage result = _inventoryManager.AddBook(_book1);
+            _inventoryManager.AddBook(_book2);
 
             // Assert
             Assert.AreEqual(expectedValue, _inventoryManager.Inventory.Count);
-        }
-
-        [TestMethod]
-        public void AddBook_AddOneNewBook_ShouldReturnMessageAdded()
-        {
-            // Arrange
-            var message = BookActionMessage.Added;
-
-            // Act
-            var result = _inventoryManager.AddBook(_book1);
-
-            // Assert
-            Assert.AreEqual(message, result);
         }
 
         [TestMethod]
@@ -63,11 +50,11 @@
             int secondExpectedQuantity = 3;
 
             // Act & Assert
-            _inventoryManager.AddBook(_book1);
+            _inventoryManager.AddBook(_book2);
             _inventoryManager.AddBook(_book4);
-            Assert.AreEqual(firstExpectedQuantity, _inventoryManager.Inventory[_book1]);
+            Assert.AreEqual(firstExpectedQuantity, _inventoryManager.Inventory[_book2]);
             _inventoryManager.AddBook(_book5);
-            Assert.AreEqual(secondExpectedQuantity, _inventoryManager.Inventory[_book1]);
+            Assert.AreEqual(secondExpectedQuantity, _inventoryManager.Inventory[_book2]);
         }
 
         [TestMethod]
@@ -77,21 +64,21 @@
             int expectedQuantity = 3;
 
             // Act
-            _inventoryManager.AddBook(_book1);
-            _inventoryManager.AddBook(_book2, 3);
+            _inventoryManager.AddBook(_book2);
+            _inventoryManager.AddBook(_book1, 3);
 
             // Assert
-            Assert.AreEqual(expectedQuantity, _inventoryManager.Inventory[_book2]);
+            Assert.AreEqual(expectedQuantity, _inventoryManager.Inventory[_book1]);
         }
 
         [TestMethod]
         public void AddBook_AddMultipleQuantitiesOfSameBook_ShouldReturnMessageIncreased()
         {
             // Arrange
-            var expectedMessage = BookActionMessage.Increased;
+            var expectedMessage = BookOperationResult.Increased;
 
             // Act
-            _inventoryManager.AddBook(_book1);
+            _inventoryManager.AddBook(_book2);
             _inventoryManager.AddBook(_book4);
             var result = _inventoryManager.AddBook(_book5);
 
@@ -106,8 +93,8 @@
             int expectedUniquieItemCount = 6;
 
             // Act
-            _inventoryManager.AddBook(_book1);
             _inventoryManager.AddBook(_book2);
+            _inventoryManager.AddBook(_book1);
             _inventoryManager.AddBook(_book3);
             _inventoryManager.AddBook(_audioBook1);
             _inventoryManager.AddBook(_audioBook2);
@@ -123,7 +110,7 @@
         public void AddBook_AddNegativeQuantity_ThrowsArgumentOutOfRangeException()
         {
             // Act and Assert
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _inventoryManager.AddBook(_book1, -1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _inventoryManager.AddBook(_book2, -1));
         }
 
     }

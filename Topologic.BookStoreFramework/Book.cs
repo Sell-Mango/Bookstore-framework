@@ -56,7 +56,7 @@ namespace Topologic.BookStoreFramework
         /// <param name="publisher">Publisher for the book.</param>
         /// <param name="releaseDate">Release date for the book.</param>
         /// <exception cref="ArgumentException"></exception>
-        protected Book(string title, string isbn, double price, string authorName, string description, string language, string publisher, DateTime releaseDate)
+        protected Book(string isbn, string title, double price, string authorName, string description, string language, string publisher, DateTime releaseDate)
         {
             if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
             _isbn = isbn;

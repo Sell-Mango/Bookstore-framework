@@ -50,8 +50,8 @@
         /// <param name="publisher">Publisher of the physical book.</param>
         /// <param name="releaseDate">Release date for the physical book.</param>
         /// <remarks>Some exceptions are handled by the base <see cref="Book"/> class.</remarks>
-        public PhysicalBook(string title, string isbn, double price, int totalPages, BookCoverType bookCoverType, string authorName, string description, string language, string publisher, DateTime releaseDate) 
-            : base(title, isbn, price, authorName, description, language, publisher, releaseDate)
+        public PhysicalBook(string isbn, string title, double price, int totalPages, BookCoverType bookCoverType, string authorName, string description, string language, string publisher, DateTime releaseDate) 
+            : base(isbn, title, price, authorName, description, language, publisher, releaseDate)
         {
             TotalPages = totalPages;
             BookCoverType = bookCoverType;

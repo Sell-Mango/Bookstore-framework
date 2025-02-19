@@ -12,9 +12,9 @@
         public void setup()
         {
             _inventoryManager = new InventoryManager();
-            _book1 = new PhysicalBook("Lord of the Rings: Two Towers", "978-3-8747-4427-0", 299, 3.25, 322);
-            _book2 = new PhysicalBook("Witcher", "978-0-7330-7673-2", 370, 3.5, 456, "Navn Navnesen");
-            _book3 = new PhysicalBook("Snømannen", "0-3599-3099-9", 599, 4.345, 588, "Ola Normann", "Some description", "Nb-No", "Egmont", new DateTime(2011, 05, 12));
+            _book1 = new PhysicalBook("978-3-8747-4427-0", "Lord of the Rings: Two Towers", 299, 322, BookCoverType.Hardcover);
+            _book2 = new PhysicalBook("978-0-7330-7673-2", "Witcher", 370, 456, BookCoverType.Spiral);
+            _book3 = new PhysicalBook("0-3599-3099-9", "Snømannen", 599, 588, BookCoverType.Paperback, "Ola Normann", "Some description", "Nb-No", "Egmont", new DateTime(2011, 05, 12));
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@
         public void RemoveBook_RemovingBook_ReturnsMessageRemoved()
         {
             // Arrange
-            var expectedMessage = BookActionMessage.Removed;
+            var expectedMessage = BookOperationResult.Removed;
             _inventoryManager.AddBook(_book1, 3);
 
             // Act
@@ -67,7 +67,7 @@
         public void RemoveBooK_DecreasingBook_ReturnsMessageDecreased()
         {
             // Arrange
-            var expectedMessage = BookActionMessage.Decreased;
+            var expectedMessage = BookOperationResult.Decreased;
             _inventoryManager.AddBook(_book1, 3);
 
             // Act
@@ -82,7 +82,7 @@
         public void RemoveBook_RemoveNoExistingBook_ReturnsMessageNotFound()
         {
             // Arrange
-            var expectedMessage = BookActionMessage.NotFound;
+            var expectedMessage = BookOperationResult.NotFound;
             _inventoryManager.AddBook(_book1, 3);
             _inventoryManager.AddBook(_book2, 3);
             _inventoryManager.AddBook(_book3, 2);
