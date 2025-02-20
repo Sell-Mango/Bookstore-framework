@@ -90,7 +90,7 @@ namespace Topologic.BookStoreFramework
         /// Searches a Book in <see cref="Inventory"/> by a given title.
         /// </summary>
         /// <param name="title"></param>
-        /// <returns>A <see cref="Book"/> that matches the provided title.</returns>
+        /// <returns>A <see cref="Book"/> that matches the provided title. Must explicit be casted to one of its derived types, like <see cref="PhysicalBook"/></returns>
         /// <exception cref="ArgumentException">Thrown if no books matching <paramref name="title" /> is found for <see cref="Book.Title"/>.</exception>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="title" /> is null, empty or whitepspace only.</exception>
         public Book FindBookByTitle(string title)
@@ -111,7 +111,7 @@ namespace Topologic.BookStoreFramework
         /// Searches a book in <see cref="Inventory"> by ISBN.
         /// </summary>
         /// <param name="isbn">A valid ISBN.</param>
-        /// <returns>A <see cref="Book"/> that matches the provided ISBN.</returns>
+        /// <returns>A <see cref="Book"/> that matches the provided ISBN. Must explicit be casted to one of its derived types, like <see cref="PhysicalBook"/></returns>
         /// <exception cref="ArgumentException">Thrown if provided <paramref name="isbn"/> format is invalid.</exception>
         /// <exception cref="ArgumentException">Thrown if no books matching <paramref name="isbn"> is found for <see cref="Book.Isbn"/>.</exception>
         public Book FindBookByIsbn(string isbn)
