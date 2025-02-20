@@ -14,7 +14,7 @@ namespace Topologic.BookStoreFramework
         private string _firstName;
         private string _lastName;
         private double _wallet;
-        private readonly Collection<Order> _orderHistory;
+        private readonly Collection<Order> _ordersHistory;
 
         /// <summary>
         /// Creates a new instance of a Customer class with email only (minimal constructor).
@@ -27,7 +27,7 @@ namespace Topologic.BookStoreFramework
             _firstName = string.Empty;
             _lastName = string.Empty;
             _wallet = 0;
-            _orderHistory = [];
+            _ordersHistory = [];
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Topologic.BookStoreFramework
             FirstName = firstName;
             LastName = lastName;
             _wallet = 0;
-            _orderHistory = [];
+            _ordersHistory = [];
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Topologic.BookStoreFramework
         /// Gets the order history of the customer.
         /// </summary>
         /// <value>Read-only collection of orders.</value>
-        public ReadOnlyCollection<Order> OrderHistory => _orderHistory.AsReadOnly();
+        public ReadOnlyCollection<Order> OrdersHistory => _ordersHistory.AsReadOnly();
 
         /// <summary>
         /// Adds funds to the customer's wallet.
@@ -127,14 +127,14 @@ namespace Topologic.BookStoreFramework
         /// Adding a newly created <see cref="Order"/> to the customer's order history."/>
         /// Should be called after the order is created from a manager class like <see cref="PaymentManager"/>.
         /// </summary>
-        /// <param name="order">Order to be added to <see cref="OrderHistory"/></param>
-        /// <returns>True if an order object is successfully added to <see cref="OrderHistory"/>, otherwise false or an <see cref="ArgumentNullException"/>.</returns>
+        /// <param name="order">Order to be added to <see cref="OrdersHistory"/></param>
+        /// <returns>True if an order object is successfully added to <see cref="OrdersHistory"/>, otherwise false or an <see cref="ArgumentNullException"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown if order is null.</exception>"
-        public bool AddToOrderHistory(Order order)
+        public bool AddToOrdersHistory(Order order)
         {
             ArgumentNullException.ThrowIfNull(order, nameof(order));
 
-            _orderHistory.Add(order);
+            _ordersHistory.Add(order);
             return true;
         }
 

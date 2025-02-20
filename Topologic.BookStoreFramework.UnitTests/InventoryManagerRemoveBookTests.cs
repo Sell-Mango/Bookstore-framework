@@ -29,7 +29,7 @@
             _inventoryManager.RemoveBook(_book2);
 
             // Assert
-            Assert.IsFalse(_inventoryManager.Inventory.ContainsKey(_book2));
+            Assert.IsFalse(_inventoryManager.BooksInventory.ContainsKey(_book2));
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@
             _inventoryManager.RemoveBook(_book2, 2);
 
             // Assert
-            Assert.IsTrue(_inventoryManager.Inventory.ContainsKey(_book2));
+            Assert.IsTrue(_inventoryManager.BooksInventory.ContainsKey(_book2));
 
         }
 

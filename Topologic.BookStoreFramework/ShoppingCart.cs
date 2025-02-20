@@ -46,29 +46,29 @@ namespace Topologic.BookStoreFramework
         /// Adds a <see cref="Book"/> or increase to <see cref="ItemsInCart"/> if stock is available in <see cref="InventoryManager"/>.
         /// </summary>
         /// <param name="book">Book existing in <see cref="InventoryManager"> to be added.</param>
-        /// <param name="numOfCopies">Number of copies of a <paramref name="book"/> to be added.</param>
+        /// <param name="numberOfCopies">Number of copies of a <paramref name="book"/> to be added.</param>
         /// <returns>A <see cref="BookOperationResult"/> based on the outcome.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown in of these cases: 
-        /// If <paramref name="numOfCopies"/> is zero or negative.
+        /// If <paramref name="numberOfCopies"/> is zero or negative.
         /// If <paramref name="book"/> does not exist in <see cref="InventoryManager"/>
-        /// If quantity of <paramref name="numOfCopies"/> exceeds stock available in <see cref="InventoryManager"/>.</exception>
-        public BookOperationResult AddToCart(Book book, int numOfCopies = 1)
+        /// If quantity of <paramref name="numberOfCopies"/> exceeds stock available in <see cref="InventoryManager"/>.</exception>
+        public BookOperationResult AddToCart(Book book, int numberOfCopies = 1)
         {
-            if (numOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Copies to add cannot be zero or negative");
+            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Copies to add cannot be zero or negative");
             
-            if (!InventoryManager.Inventory.TryGetValue(book, out var copiesInInventory)) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Book does not exist");
+            if (!InventoryManager.BooksInventory.TryGetValue(book, out var copiesInInventory)) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Book does not exist");
             
-            if (numOfCopies > copiesInInventory) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Quantity exceeds whats in stock");
+            if (numberOfCopies > copiesInInventory) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Quantity exceeds whats in stock");
             
-            if (_itemsInCart.ContainsKey(book) && ItemsInCart[book] + numOfCopies > copiesInInventory) throw new ArgumentOutOfRangeException(nameof(numOfCopies), "Quantity exceeds whats in stock");
+            if (_itemsInCart.ContainsKey(book) && ItemsInCart[book] + numberOfCopies > copiesInInventory) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Quantity exceeds whats in stock");
 
-            if (_itemsInCart.TryAdd(book, numOfCopies))
+            if (_itemsInCart.TryAdd(book, numberOfCopies))
             {
                 return BookOperationResult.Added;
             }
             else
             {
-                _itemsInCart[book] += numOfCopies;
+                _itemsInCart[book] += numberOfCopies;
                 return BookOperationResult.Increased;
             }
         }

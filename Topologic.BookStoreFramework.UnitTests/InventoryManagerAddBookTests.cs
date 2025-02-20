@@ -39,7 +39,7 @@
             _inventoryManager.AddBook(_book2);
 
             // Assert
-            Assert.AreEqual(expectedValue, _inventoryManager.Inventory.Count);
+            Assert.AreEqual(expectedValue, _inventoryManager.BooksInventory.Count);
         }
 
         [TestMethod]
@@ -52,9 +52,9 @@
             // Act & Assert
             _inventoryManager.AddBook(_book2);
             _inventoryManager.AddBook(_book4);
-            Assert.AreEqual(firstExpectedQuantity, _inventoryManager.Inventory[_book2]);
+            Assert.AreEqual(firstExpectedQuantity, _inventoryManager.BooksInventory[_book2]);
             _inventoryManager.AddBook(_book5);
-            Assert.AreEqual(secondExpectedQuantity, _inventoryManager.Inventory[_book2]);
+            Assert.AreEqual(secondExpectedQuantity, _inventoryManager.BooksInventory[_book2]);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@
             _inventoryManager.AddBook(_book1, 3);
 
             // Assert
-            Assert.AreEqual(expectedQuantity, _inventoryManager.Inventory[_book1]);
+            Assert.AreEqual(expectedQuantity, _inventoryManager.BooksInventory[_book1]);
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@
             _inventoryManager.AddBook(_eBook1);
 
             // Assert
-            Assert.AreEqual(expectedUniquieItemCount, _inventoryManager.Inventory.Count);
+            Assert.AreEqual(expectedUniquieItemCount, _inventoryManager.BooksInventory.Count);
         }
 
         [TestMethod]

@@ -62,7 +62,7 @@
                     new Dictionary<Book, int>(currentShoppingCart.ItemsInCart)
                 );
 
-                customer.AddToOrderHistory(order);
+                customer.AddToOrdersHistory(order);
 
                 foreach (var bookInCartX in currentShoppingCart.ItemsInCart)
                 {

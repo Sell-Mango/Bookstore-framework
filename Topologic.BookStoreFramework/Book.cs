@@ -53,10 +53,10 @@ namespace Topologic.BookStoreFramework
         /// <param name="authorName">Author name of the book.</param>
         /// <param name="description">A brief description of the book (max <see cref="MAX_DESCRIPTION_LENGTH"/> characters.</param>
         /// <param name="language">Written language for the book.</param>
-        /// <param name="publisher">Publisher for the book.</param>
+        /// <param name="publisherName">Publisher for the book.</param>
         /// <param name="releaseDate">Release date for the book.</param>
         /// <exception cref="ArgumentException"></exception>
-        protected Book(string isbn, string title, double price, string authorName, string description, string language, string publisher, DateTime releaseDate)
+        protected Book(string isbn, string title, double price, string authorName, string description, string language, string publisherName, DateTime releaseDate)
         {
             if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
             _isbn = isbn;
@@ -65,7 +65,7 @@ namespace Topologic.BookStoreFramework
             AuthorName = authorName;
             Description = description;
             Language = language;
-            Publisher = publisher;
+            PublisherName = publisherName;
             ReleaseDate = releaseDate;
         }
 
@@ -140,7 +140,7 @@ namespace Topologic.BookStoreFramework
         /// Gets or sets the publisher of the book.
         /// </summary>
         /// <value>Name of the book publisher.</value>
-        public string Publisher { get; set; } = string.Empty;
+        public string PublisherName { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the release date of the book.

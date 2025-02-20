@@ -35,11 +35,11 @@
         /// <summary>
         /// The <see cref="Book"/> was updated successfully in a collection.
         /// </summary>
-        UpdateSuccess,
+        Updated,
 
         /// <summary>
         /// The update of a <see cref="Book"/> failed in a collection.
         /// </summary>
-        UpdateFailed
+        Failed
     }
 }

@@ -45,11 +45,11 @@
         /// <param name="authorName">Author name of the audio book.</param>
         /// <param name="description">A brief description of the audio book (max <see cref="MAX_DESCRIPTION_LENGTH"/> characters.</param>
         /// <param name="language">Written language for the audio book.</param>
-        /// <param name="publisher">Publisher of the audio book.</param>
+        /// <param name="publisherName">Publisher of the audio book.</param>
         /// <param name="releaseDate">Release date for the audio book.</param>
         /// <remarks>Some exceptions are handled by the base <see cref="Book"/> class.</remarks>
-        public AudioBook(string isbn, string title, double price, TimeSpan duration, string narrator, string authorName, string description, string language, string publisher, DateTime releaseDate)
-            : base(title, isbn, price, authorName, description, language, publisher, releaseDate)
+        public AudioBook(string isbn, string title, double price, TimeSpan duration, string narrator, string authorName, string description, string language, string publisherName, DateTime releaseDate)
+            : base(title, isbn, price, authorName, description, language, publisherName, releaseDate)
         {
             Duration = duration;
             Narrator = narrator;
@@ -68,7 +68,7 @@
             {
                 if(value <= TimeSpan.Zero || value >= TimeSpan.MaxValue)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"Audio book duration cant be lower than zero or higher {TimeSpan.MaxValue}.");
+                    throw new ArgumentOutOfRangeException(nameof(value), $"Audio book duration cant be lower than zero or higher than {TimeSpan.MaxValue}.");
                 }
                 _duration = value;
             }

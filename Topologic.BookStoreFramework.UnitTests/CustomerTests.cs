@@ -35,10 +35,10 @@
             Order order = new(customer1.CustomerId, DateTime.Now, 42, []);
 
             // Act
-            customer1.AddToOrderHistory(order);
+            customer1.AddToOrdersHistory(order);
 
             // Assert
-            Assert.AreEqual(order, customer1.OrderHistory.FirstOrDefault());
+            Assert.AreEqual(order, customer1.OrdersHistory.FirstOrDefault());
         }
     }
 }

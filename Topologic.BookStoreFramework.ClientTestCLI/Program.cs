@@ -73,7 +73,7 @@ class Program
         }
 
         // 7. Print the order made by customer1
-        Console.WriteLine(customer1.OrderHistory[0]);
+        Console.WriteLine(customer1.OrdersHistory[0]);
 
     }
 }
