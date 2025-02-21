@@ -87,10 +87,6 @@
             get => _bookCoverType;
             set
             {
-                if (!Enum.IsDefined(value))
-                {
-                    throw new ArgumentNullException(nameof(value), "BookCoverType cannor be null");
-                }
                 if(value == BookCoverType.None)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), "BookCoverType cannot be None");
