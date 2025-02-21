@@ -14,8 +14,8 @@ namespace Topologic.BookStoreFramework
         /// <summary>
         /// Creates a new instance of <see cref="ShoppingCart"/> with an existing inventory manager and customer id."/>
         /// </summary>
-        /// <param name="inventoryManager"></param>
-        /// <param name="customerId"></param>
+        /// <param name="inventoryManager">Inventory to validate have desires items in stock.</param>
+        /// <param name="customerId">referring to the customer owning the cart.</param>
         /// <exception cref="ArgumentNullException">Thrown if either <paramref name="inventoryManager"/> or <paramref name="customerId"/> is empty.</exception>
         public ShoppingCart(InventoryManager inventoryManager, string customerId)
         {

@@ -9,6 +9,9 @@ namespace Topologic.BookStoreFramework
     /// </summary>
     public abstract class Book : IEquatable<Book>
     {
+        private const int MAX_TITLE_LENGTH = 200;
+        private const int MAX_DESCRIPTION_LENGTH = 5000;
+
         private string _title;
         private readonly string _isbn;
         private double _price;
@@ -151,11 +154,11 @@ namespace Topologic.BookStoreFramework
         /// <summary>
         /// Checks if the current book is equal to the comparing book based on <see cref="Isbn"/>.
         /// </summary>
-        /// <param name="otherBook">The other book object to compare with the current book.</param>
+        /// <param name="other">The other book object to compare with the current book.</param>
         /// <returns>True if the current and comparing book have the same <see cref="Isbn"/>, or false.</returns>
-        public bool Equals(Book? otherBook)
+        public bool Equals(Book? other)
         {
-            return otherBook is not null && otherBook.Isbn == this.Isbn;
+            return other is not null && other.Isbn == this.Isbn;
         }
 
         /// <summary>
@@ -200,8 +203,5 @@ namespace Topologic.BookStoreFramework
 
             return mainInfo;
         }
-
-        private const int MAX_TITLE_LENGTH = 200;
-        private const int MAX_DESCRIPTION_LENGTH = 5000;
     }
 }

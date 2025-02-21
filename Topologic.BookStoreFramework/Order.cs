@@ -23,13 +23,14 @@ namespace Topologic.BookStoreFramework
         /// <param name="orderDateTime"></param>
         /// <param name="orderTotal"></param>
         /// <param name="orderedItems"></param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="customerId"/> or <paramref name="orderedItems"/>' parameters is null.</exception>
         public Order(string customerId, DateTime orderDateTime, double orderTotal, Dictionary<Book, int> orderedItems)
         {
             _orderId = Guid.NewGuid().ToString();
-            _customerId = customerId;
+            _customerId = customerId ?? throw new ArgumentNullException(nameof(customerId));
             _orderDateTime = orderDateTime;
             _orderTotal = orderTotal;
-            _orderedItems = orderedItems;
+            _orderedItems = orderedItems ?? throw new ArgumentNullException(nameof(orderedItems));
         }
 
         /// <summary>
