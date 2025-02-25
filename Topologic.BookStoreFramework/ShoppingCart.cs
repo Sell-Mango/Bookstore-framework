@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Topologic.BookStoreFramework.Advanced;
 
 namespace Topologic.BookStoreFramework
 {

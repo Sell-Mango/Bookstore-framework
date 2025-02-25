@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Topologic.BookStoreFramework.Advanced;
 
 namespace Topologic.BookStoreFramework.Utilities
 {

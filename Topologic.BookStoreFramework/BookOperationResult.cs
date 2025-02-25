@@ -1,4 +1,6 @@
-﻿namespace Topologic.BookStoreFramework
+﻿using Topologic.BookStoreFramework.Advanced;
+
+namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// Represents a result of an action perfomed on a collection of <see cref="Book"/> objects. 
