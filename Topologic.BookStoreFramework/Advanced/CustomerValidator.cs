@@ -1,4 +1,4 @@
-﻿namespace Topologic.BookStoreFramework.Utilities
+﻿namespace Topologic.BookStoreFramework.Advanced
 {
     /// <summary>
     /// Static class providing methods to validate <see cref="Customer"> data.

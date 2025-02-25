@@ -1,6 +1,4 @@
-﻿using Topologic.BookStoreFramework.Utilities;
-
-namespace Topologic.BookStoreFramework
+﻿namespace Topologic.BookStoreFramework.Advanced
 {
 
     /// <summary>
@@ -24,7 +22,7 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="ArgumentException">Thrown when ISBN is invalid.</exception>
         protected Book(string isbn)
         {
-            if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format");
             _isbn = isbn;
             Title = string.Empty;
             _price = 0;
@@ -40,7 +38,7 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="ArgumentException">Thrown when ISBN is invalid.</exception>
         protected Book(string isbn, string title, double price)
         {
-            if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format");
             _isbn = isbn;
             Title = title;
             Price = price;
@@ -61,7 +59,7 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="ArgumentException"></exception>
         protected Book(string isbn, string title, double price, string authorName, string description, string language, string publisherName, DateTime releaseDate)
         {
-            if (!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format");
             _isbn = isbn;
             Title = title;
             Price = price;
@@ -158,7 +156,7 @@ namespace Topologic.BookStoreFramework
         /// <returns>True if the current and comparing book have the same <see cref="Isbn"/>, or false.</returns>
         public bool Equals(Book? other)
         {
-            return other is not null && other.Isbn == this.Isbn;
+            return other is not null && other.Isbn == Isbn;
         }
 
         /// <summary>
@@ -188,11 +186,11 @@ namespace Topologic.BookStoreFramework
         public override string ToString()
         {
             var mainInfo = $"Title: {Title}, ISBN: {Isbn}";
-            if(Price != 0)
+            if (Price != 0)
             {
                 mainInfo += $", Price: {Price}";
             }
-            if(!string.IsNullOrEmpty(AuthorName))
+            if (!string.IsNullOrEmpty(AuthorName))
             {
                 mainInfo += $", Authors: {string.Join(",", AuthorName)}";
             }

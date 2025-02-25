@@ -1,4 +1,6 @@
-﻿namespace Topologic.BookStoreFramework
+﻿using Topologic.BookStoreFramework.Advanced;
+
+namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// A manager class for handling payments in a book store.
