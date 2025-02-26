@@ -25,7 +25,7 @@ namespace Topologic.BookStoreFramework
         /// Creates a deep copy of the provided <paramref name="booksInventory">.
         /// </summary>
         /// <param name="booksInventory">An existing Dictionary of books to be added.</param>
-        public InventoryManager(Dictionary<Book, int> booksInventory)
+        public InventoryManager(IDictionary<Book, int> booksInventory)
         {
             _booksInventory = new Dictionary<Book, int>(booksInventory) ?? throw new ArgumentNullException(nameof(booksInventory), "Inventory cannot be null.");
         }
@@ -49,10 +49,14 @@ namespace Topologic.BookStoreFramework
             ArgumentNullException.ThrowIfNull(book, nameof(book));
             if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "number of copies must be 1 or higher.");
 
-            if (!_booksInventory.TryAdd(book, numberOfCopies))
+            if (_booksInventory.ContainsKey(book))
             {
                 _booksInventory[book] += numberOfCopies;
                 return BookOperationResult.Increased;
+            }
+            else
+            {
+                _booksInventory.Add(book, numberOfCopies);
             }
             return BookOperationResult.Added;
         }

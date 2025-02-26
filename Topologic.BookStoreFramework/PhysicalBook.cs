@@ -91,7 +91,7 @@ namespace Topologic.BookStoreFramework
             {
                 if(value == BookCoverType.None)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "BookCoverType cannot be None, assign it something else.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "BookCoverType cannot be None, assign it some other value.");
                 }
                 _bookCoverType = value;
             }

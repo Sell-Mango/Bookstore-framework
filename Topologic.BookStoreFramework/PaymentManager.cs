@@ -9,6 +9,9 @@ namespace Topologic.BookStoreFramework
     /// </summary>
     public class PaymentManager
     {
+        private IPaymentProcessor? _paymentProcessor;
+
+
         /// <summary>
         /// Creates a new instance of a PaymentManager class with an existing inventory manager.
         /// </summary>
@@ -24,6 +27,19 @@ namespace Topologic.BookStoreFramework
         /// </summary>
         /// <value>Inventory manager of books for the payment manager to check current stock.</value>
         public InventoryManager InventoryManager { get; private set; }
+
+        public IPaymentProcessor PaymentProcessor => _paymentProcessor;
+
+        public void SetPaymentProcessor(IPaymentProcessor paymentProcessor)
+        {
+            _paymentProcessor = paymentProcessor ?? throw new ArgumentNullException(nameof(paymentProcessor), "Payment processor cannot be null.");
+        }
+
+        public void ClearPaymentProcessor()
+        {
+            _paymentProcessor = null;
+        }
+
 
         /// <summary>
         /// Validate if correct <see cref="Customer"/> is purchasing items in a <see cref="ShoppingCart"/>.
@@ -54,8 +70,15 @@ namespace Topologic.BookStoreFramework
         /// <returns>True if <paramref name="customer"/> successfully buys an order and stock items is removed from inventory. Otherwise false.</returns>
         public bool PurchaseOrder(Customer customer, ShoppingCart currentShoppingCart)
         {
+            if (_paymentProcessor is null) throw new InvalidOperationException("Payment processor is not set. Cannot process payment unless payment method is set.");
+            
+            
+            ValdiateCorrectCustomer(customer, currentShoppingCart);
+
             double amountToPay = currentShoppingCart.CalculateSubTotal();
-            if (customer.Wallet >= amountToPay)
+
+
+            if (PaymentProcessor.ProcessPayment(customer, amountToPay))
             {
                 var order = new Order(
                     customer.CustomerId,
@@ -72,11 +95,18 @@ namespace Topologic.BookStoreFramework
                 }
 
                 currentShoppingCart.ClearCart();
-
-                return true;
-
             }
-            return false;
+
+            else
+            {
+                throw new PaymentProcessingException($"Something went wrong when processing your payment with: {PaymentProcessor.PaymentMethodName}.");
+            }
+
+            ClearPaymentProcessor();
+
+            return true;
+
+
         }
     }
 }

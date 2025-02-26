@@ -9,12 +9,10 @@ namespace Topologic.BookStoreFramework
     /// </summary>
     public class Customer
     {
-        private readonly string _customerId;
         private string _email;
         private string _firstName;
         private string _lastName;
-        private double _wallet;
-        private readonly Collection<Order> _ordersHistory;
+        private readonly List<Order> _ordersHistory;
 
         /// <summary>
         /// Creates a new instance of a Customer class with email only (minimal constructor).
@@ -22,11 +20,11 @@ namespace Topologic.BookStoreFramework
         /// <param name="email">Email address for the customer.</param>
         public Customer(string email)
         {
-            _customerId = Guid.NewGuid().ToString();
+            CustomerId = Guid.NewGuid().ToString();
             Email = email;
             _firstName = string.Empty;
             _lastName = string.Empty;
-            _wallet = 0;
+            Wallet = 0;
             _ordersHistory = [];
         }
 
@@ -38,19 +36,13 @@ namespace Topologic.BookStoreFramework
         /// <param name="lastName">Last name of the customer.</param>
         public Customer(string email, string firstName, string lastName)
         {
-            _customerId = Guid.NewGuid().ToString();
+            CustomerId = Guid.NewGuid().ToString();
             Email = email;
             FirstName = firstName;
             LastName = lastName;
-            _wallet = 0;
+            Wallet = 0;
             _ordersHistory = [];
         }
-
-        /// <summary>
-        /// Gets the unique id for the customer. 
-        /// </summary>
-        /// <value>Customer id that is automatically generated.</value>
-        public string CustomerId { get => _customerId; }
 
         /// <summary>
         /// Gets or sets the email address for the customer.
@@ -98,10 +90,16 @@ namespace Topologic.BookStoreFramework
         }
 
         /// <summary>
+        /// Gets the unique id for the customer. 
+        /// </summary>
+        /// <value>Customer id that is automatically generated.</value>
+        public string CustomerId { get; }
+
+        /// <summary>
         /// Gets the wallet balance of the customer.
         /// </summary>
         /// <value>Current wallet balance of customer.</value>
-        public double Wallet { get => _wallet; }
+        public double Wallet { get; private set; }
 
         /// <summary>
         /// Gets the order history of the customer.
@@ -119,7 +117,15 @@ namespace Topologic.BookStoreFramework
         {
             if (amountToAdd <= 0) throw new ArgumentOutOfRangeException(nameof(amountToAdd), "Amount to add to balance must be higher than 0.");
 
-            _wallet += amountToAdd;
+            Wallet += amountToAdd;
+            return true;
+        }
+
+        public bool DecreaseFundsFromWallet(double amountToDecrease)
+        {
+            if (amountToDecrease <= 0) throw new ArgumentOutOfRangeException(nameof(amountToDecrease), "Amount to decrease from balance must be higher than 0.");
+            
+            Wallet -= amountToDecrease;
             return true;
         }
 
