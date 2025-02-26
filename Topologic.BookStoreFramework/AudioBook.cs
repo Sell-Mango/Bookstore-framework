@@ -1,4 +1,6 @@
-﻿namespace Topologic.BookStoreFramework
+﻿using Topologic.BookStoreFramework.Advanced;
+
+namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// Represents an audio book, derived from <see cref="Book"/>.

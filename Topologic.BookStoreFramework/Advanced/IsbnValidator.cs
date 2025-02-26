@@ -1,7 +1,6 @@
 ﻿using System.Text.RegularExpressions;
-using Topologic.BookStoreFramework.Advanced;
 
-namespace Topologic.BookStoreFramework.Utilities
+namespace Topologic.BookStoreFramework.Advanced
 {
     /// <summary>
     /// Static class providing a method to validate ISBN for derived <see cref="Book"/> objects.

@@ -47,7 +47,7 @@ namespace Topologic.BookStoreFramework
         public BookOperationResult AddBook(Book book, int numberOfCopies = 1)
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
-            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Cannot add zero or negative amount books to Inventory");
+            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Cannot add zero or negative amount books to Inventory.");
 
             if (!_booksInventory.TryAdd(book, numberOfCopies))
             {
@@ -55,6 +55,29 @@ namespace Topologic.BookStoreFramework
                 return BookOperationResult.Increased;
             }
             return BookOperationResult.Added;
+        }
+
+        public BookOperationResult DecreaseBook(Book book, int numberOfCopies = 1)
+        {
+            ArgumentNullException.ThrowIfNull(book, nameof(book));
+            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Cannot decrease zero or negative amount books from Inventory.");
+
+            if (!_booksInventory.TryGetValue(book, out int copiesInInventory))
+            {
+                throw new KeyNotFoundException($"Book with title {book.Title} and ISBN {book.Isbn} not found in inventory.");
+            }
+            if (copiesInInventory == 0)
+            {
+                throw new OutOfStockException($"Book with title {book.Title} and ISBN {book.Isbn} is out of stock.");
+            }
+            if (copiesInInventory < numberOfCopies)
+            {
+                throw new OutOfStockException($"Cannot remove {numberOfCopies} of book with title {book.Title} and ISBN {book.Isbn} from inventory because only {copiesInInventory} copies are available.");
+            }
+
+            _booksInventory[book] -= numberOfCopies;
+            return BookOperationResult.Decreased;
+
         }
 
         /// <summary>
@@ -69,21 +92,12 @@ namespace Topologic.BookStoreFramework
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
             if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Cannot remove zero or negative amount books to Inventory");
-
-            if (_booksInventory.TryGetValue(book, out int currentNumOfCopies))
+            if (!_booksInventory.TryGetValue(book, out _))
             {
-                if (currentNumOfCopies <= numberOfCopies)
-                {
-                    _booksInventory.Remove(book);
-                    return BookOperationResult.Removed;
-                }
-                else
-                {
-                    _booksInventory[book] -= numberOfCopies;
-                    return BookOperationResult.Decreased;
-                }
+                throw new KeyNotFoundException($"Book with title {book.Title} and ISBN {book.Isbn} not found in inventory. Try checking again with another title or ISBN.");
             }
-            return BookOperationResult.NotFound;
+            _booksInventory.Remove(book);
+            return BookOperationResult.Removed;
         }
 
         /// <summary>
@@ -103,8 +117,7 @@ namespace Topologic.BookStoreFramework
                     return bookEntryX.Key;
                 }
             }
-
-            throw new ArgumentException("No books found by title", nameof(title));
+            throw new KeyNotFoundException($"No books found by title {title}. Are you sure it exists in inventory?");
         }
 
         /// <summary>
