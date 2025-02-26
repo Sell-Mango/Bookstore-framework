@@ -22,7 +22,7 @@
         /// <exception cref="ArgumentException">Thrown when ISBN is invalid.</exception>
         protected Book(string isbn)
         {
-            if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format");
+            if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format.");
             _isbn = isbn;
             Title = string.Empty;
             _price = 0;
@@ -38,7 +38,7 @@
         /// <exception cref="ArgumentException">Thrown when ISBN is invalid.</exception>
         protected Book(string isbn, string title, double price)
         {
-            if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format");
+            if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format.");
             _isbn = isbn;
             Title = title;
             Price = price;
@@ -59,7 +59,7 @@
         /// <exception cref="ArgumentException"></exception>
         protected Book(string isbn, string title, double price, string authorName, string description, string language, string publisherName, DateTime releaseDate)
         {
-            if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format");
+            if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format.");
             _isbn = isbn;
             Title = title;
             Price = price;
@@ -83,7 +83,7 @@
             {
                 if (value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Price cannot be zero or negative number");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Price must be higher than 0.");
                 }
                 _price = value;
             }
@@ -101,7 +101,7 @@
             {
                 if (value.Length > MAX_TITLE_LENGTH)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"Title is too long, max {MAX_TITLE_LENGTH} characters");
+                    throw new ArgumentOutOfRangeException(nameof(value), $"Title is too long, max {MAX_TITLE_LENGTH} characters.");
                 }
                 _title = value;
             }
@@ -125,7 +125,7 @@
             {
                 if (value.Length > MAX_DESCRIPTION_LENGTH)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"Description is too long, max {MAX_DESCRIPTION_LENGTH} characters");
+                    throw new ArgumentOutOfRangeException(nameof(value), $"Description is too long, max {MAX_DESCRIPTION_LENGTH} characters.");
                 }
                 _description = value;
             }

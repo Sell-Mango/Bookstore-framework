@@ -20,8 +20,8 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="ArgumentNullException">Thrown if either <paramref name="inventoryManager"/> or <paramref name="customerId"/> is empty.</exception>
         public ShoppingCart(InventoryManager inventoryManager, string customerId)
         {
-            InventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager), "Inventory cannot be null");
-            CustomerId = customerId ?? throw new ArgumentNullException(nameof(customerId), "Customer cannot be null");
+            InventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager), "Inventory cannot be null.");
+            CustomerId = customerId ?? throw new ArgumentNullException(nameof(customerId), "Customer cannot be null.");
             _itemsInCart = [];
         }
 
@@ -53,15 +53,17 @@ namespace Topologic.BookStoreFramework
         /// If <paramref name="numberOfCopies"/> is zero or negative.
         /// If <paramref name="book"/> does not exist in <see cref="InventoryManager"/>
         /// If quantity of <paramref name="numberOfCopies"/> exceeds stock available in <see cref="InventoryManager"/>.</exception>
-        public BookOperationResult AddToCart(Book book, int numberOfCopies = 1)
+        public BookOperationResult AddToCart(Book? book, int numberOfCopies = 1)
         {
-            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Copies to add cannot be zero or negative");
+            ArgumentNullException.ThrowIfNull(book, nameof(book));
+
+            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Number of copies must be 1 or higher.");
             
             if (!InventoryManager.BooksInventory.TryGetValue(book, out var copiesInInventory)) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Book does not exist");
             
-            if (numberOfCopies > copiesInInventory) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Quantity exceeds whats in stock");
+            if (numberOfCopies > copiesInInventory) throw new OutOfStockException($"Quantity of {numberOfCopies} exceeds whats in stock: {copiesInInventory}.");
             
-            if (_itemsInCart.ContainsKey(book) && ItemsInCart[book] + numberOfCopies > copiesInInventory) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Quantity exceeds whats in stock");
+            if (_itemsInCart.ContainsKey(book) && ItemsInCart[book] + numberOfCopies > copiesInInventory) throw new OutOfStockException($"Quantity of {numberOfCopies} and whats in your cart exceeds whats in stock: {copiesInInventory}.");
 
             if (_itemsInCart.TryAdd(book, numberOfCopies))
             {
@@ -83,7 +85,7 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="ArgumentOutOfRangeException">Thrown if copies to remove is zero or negative.</exception>
         public BookOperationResult RemoveFromCart(Book book, int copiesToRemove = 1)
         {
-            if (copiesToRemove < 1) throw new ArgumentOutOfRangeException(nameof(copiesToRemove), "Copies to remove cannot be zero or negative");
+            if (copiesToRemove < 1) throw new ArgumentOutOfRangeException(nameof(copiesToRemove), "Copies to remove must be 1 or higher.");
 
             if(_itemsInCart.TryGetValue(book, out int copiesInCart))
             {
@@ -98,7 +100,7 @@ namespace Topologic.BookStoreFramework
                     return BookOperationResult.Removed;
                 }
             }
-            return BookOperationResult.NotFound;
+            throw new InvalidOperationException("Book not found in cart. Are you sure it has been added?");
         }
 
         /// <summary>

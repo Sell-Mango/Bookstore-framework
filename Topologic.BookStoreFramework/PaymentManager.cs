@@ -16,7 +16,7 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="inventoryManager"/> is null.</exception>
         public PaymentManager(InventoryManager inventoryManager)
         {
-            InventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager), "Inventory cannot be null");
+            InventoryManager = inventoryManager ?? throw new ArgumentNullException(nameof(inventoryManager), "Inventory cannot be null.");
         }
 
         /// <summary>
@@ -37,9 +37,9 @@ namespace Topologic.BookStoreFramework
         {
             ArgumentNullException.ThrowIfNull(customer);
             ArgumentNullException.ThrowIfNull(currentShoppingCart);
-            if (currentShoppingCart.ItemsInCart.Count < 1) throw new ArgumentOutOfRangeException(nameof(currentShoppingCart), "Shopping cart must contain atleast one item to make an order.");
+            if (currentShoppingCart.ItemsInCart.Count < 1) throw new ArgumentOutOfRangeException(nameof(currentShoppingCart), "Shopping cart must contain atleast 1 item to make an order.");
 
-            if (!customer.CustomerId.Equals(currentShoppingCart.CustomerId)) throw new ArgumentException("Invalid user", nameof(customer));
+            if (!customer.CustomerId.Equals(currentShoppingCart.CustomerId)) throw new ArgumentException("Invalid customer, id does not match the shopping cart. Have you doublechecked the customer id?", nameof(customer));
             return true;
         }
 
@@ -68,7 +68,7 @@ namespace Topologic.BookStoreFramework
 
                 foreach (var bookInCartX in currentShoppingCart.ItemsInCart)
                 {
-                    InventoryManager.RemoveBook(bookInCartX.Key, bookInCartX.Value);
+                    InventoryManager.DecreaseBook(bookInCartX.Key, bookInCartX.Value);
                 }
 
                 currentShoppingCart.ClearCart();

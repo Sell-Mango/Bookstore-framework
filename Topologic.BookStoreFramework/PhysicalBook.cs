@@ -71,7 +71,7 @@ namespace Topologic.BookStoreFramework
             {
                 if(value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Pages cannot be zero or negative");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Amount of pages must be higher than 0.");
                 }
                 _totalPages = value;
             }
@@ -91,7 +91,7 @@ namespace Topologic.BookStoreFramework
             {
                 if(value == BookCoverType.None)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "BookCoverType cannot be None");
+                    throw new ArgumentOutOfRangeException(nameof(value), "BookCoverType cannot be None, assign it something else.");
                 }
                 _bookCoverType = value;
             }

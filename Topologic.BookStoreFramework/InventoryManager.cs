@@ -27,7 +27,7 @@ namespace Topologic.BookStoreFramework
         /// <param name="booksInventory">An existing Dictionary of books to be added.</param>
         public InventoryManager(Dictionary<Book, int> booksInventory)
         {
-            _booksInventory = new Dictionary<Book, int>(booksInventory) ?? throw new ArgumentNullException(nameof(booksInventory), "Inventory cannot be null");
+            _booksInventory = new Dictionary<Book, int>(booksInventory) ?? throw new ArgumentNullException(nameof(booksInventory), "Inventory cannot be null.");
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Topologic.BookStoreFramework
         public BookOperationResult AddBook(Book book, int numberOfCopies = 1)
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
-            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Cannot add zero or negative amount books to Inventory.");
+            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "number of copies must be 1 or higher.");
 
             if (!_booksInventory.TryAdd(book, numberOfCopies))
             {
@@ -60,19 +60,19 @@ namespace Topologic.BookStoreFramework
         public BookOperationResult DecreaseBook(Book book, int numberOfCopies = 1)
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
-            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Cannot decrease zero or negative amount books from Inventory.");
+            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Amount of books to decrease must be 1 or higher.");
 
             if (!_booksInventory.TryGetValue(book, out int copiesInInventory))
             {
-                throw new KeyNotFoundException($"Book with title {book.Title} and ISBN {book.Isbn} not found in inventory.");
+                throw new KeyNotFoundException($"Book with title {book.Title} (ISBN: {book.Isbn}) not found in inventory. Be sure to add it to inventory first.");
             }
             if (copiesInInventory == 0)
             {
-                throw new OutOfStockException($"Book with title {book.Title} and ISBN {book.Isbn} is out of stock.");
+                throw new OutOfStockException($"Book with title {book.Title} (ISBN: {book.Isbn}) is out of stock. Increase quantity by adding it first.");
             }
             if (copiesInInventory < numberOfCopies)
             {
-                throw new OutOfStockException($"Cannot remove {numberOfCopies} of book with title {book.Title} and ISBN {book.Isbn} from inventory because only {copiesInInventory} copies are available.");
+                throw new OutOfStockException($"Cannot remove {numberOfCopies} copies of book with title {book.Title} (ISBN: {book.Isbn}) from inventory because only {copiesInInventory} copies are available.");
             }
 
             _booksInventory[book] -= numberOfCopies;
@@ -91,7 +91,7 @@ namespace Topologic.BookStoreFramework
         public BookOperationResult RemoveBook(Book book, int numberOfCopies = 1)
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
-            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Cannot remove zero or negative amount books to Inventory");
+            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Copies to remove must be 1 or higher.");
             if (!_booksInventory.TryGetValue(book, out _))
             {
                 throw new KeyNotFoundException($"Book with title {book.Title} and ISBN {book.Isbn} not found in inventory. Try checking again with another title or ISBN.");
@@ -109,7 +109,7 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="title" /> is null, empty or whitepspace only.</exception>
         public Book FindBookByTitle(string title)
         {
-            if(string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(nameof(title), "Title cannot be null or empty");
+            if(string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(nameof(title), "Title cannot be null or empty.");
             foreach (var bookEntryX in _booksInventory)
             {
                 if (bookEntryX.Key.Title.Equals(title))
@@ -118,6 +118,22 @@ namespace Topologic.BookStoreFramework
                 }
             }
             throw new KeyNotFoundException($"No books found by title {title}. Are you sure it exists in inventory?");
+        }
+
+        public bool TryFindBookByTite(string title, out Book? book)
+        {
+            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(nameof(title), "Title cannot be null or empty.");
+            
+            foreach(var bookX in _booksInventory)
+            {
+                if(bookX.Key.Title.Equals(title))
+                {
+                    book = bookX.Key;
+                    return true;
+                }
+            }
+            book = null;
+            return false;
         }
 
         /// <summary>
@@ -129,7 +145,7 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="ArgumentException">Thrown if no books matching <paramref name="isbn"> is found for <see cref="Book.Isbn"/>.</exception>
         public Book FindBookByIsbn(string isbn)
         {
-            if(!IsbnValidator.IsValidIsbn(isbn)) throw new ArgumentException("Invalid ISBN format", nameof(isbn));
+            if(!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN. It must be either 10 or 13 letter format.");
             foreach (var bookEntryX in BooksInventory)
             {
                 if (bookEntryX.Key.Isbn.Equals(isbn))
@@ -137,7 +153,22 @@ namespace Topologic.BookStoreFramework
                     return bookEntryX.Key;
                 }
             }
-            throw new ArgumentException("No books by ISBN found", nameof(isbn));
+            throw new KeyNotFoundException($"No books by {isbn} found. Are you sure it exists in inventory?");
+        }
+
+        public bool TryFindBookByIsbn(string isbn, out Book book)
+        {
+            if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN. It must be either 10 or 13 letter format.");
+            foreach (var bookX in _booksInventory)
+            {
+                if (bookX.Key.Title.Equals(isbn))
+                {
+                    book = bookX.Key;
+                    return true;
+                }
+            }
+            book = null;
+            return false;
         }
     }
 }

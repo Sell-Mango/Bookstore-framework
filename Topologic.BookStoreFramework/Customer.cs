@@ -92,7 +92,7 @@ namespace Topologic.BookStoreFramework
             get => _lastName;
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "Last name cannot be empty or null");
+                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "Last name cannot be empty or null.");
                 _lastName = value;
             }
         }
@@ -117,7 +117,7 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="ArgumentOutOfRangeException">Thrown if zero or negative amount is added.</exception>
         public bool AddFundsToWallet(double amountToAdd)
         {
-            if (amountToAdd <= 0) throw new ArgumentOutOfRangeException(nameof(amountToAdd), "Cannot add zero or negative balanse");
+            if (amountToAdd <= 0) throw new ArgumentOutOfRangeException(nameof(amountToAdd), "Amount to add to balance must be higher than 0.");
 
             _wallet += amountToAdd;
             return true;
