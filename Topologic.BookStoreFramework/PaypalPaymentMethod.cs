@@ -18,13 +18,11 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="PaymentProcessingException">Thrown when the customer does not have enough funds in their wallet.</exception>
         public bool ProcessPayment(Customer customer, double amountToPay)
         {
-            if (customer.Wallet >= amountToPay)
-            {
-                customer.DecreaseFundsFromWallet(amountToPay);
-                return true;
-            }
-
-            throw new PaymentProcessingException("Not enough funds in wallet.");
+            if (customer.Wallet < amountToPay)
+                throw new InvalidOperationException("Not enough funds in wallet.");
+            
+            customer.DecreaseFundsFromWallet(amountToPay);
+            return true;
         }
     }
 }

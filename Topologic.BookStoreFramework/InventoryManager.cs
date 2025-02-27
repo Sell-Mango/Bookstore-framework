@@ -47,7 +47,7 @@ namespace Topologic.BookStoreFramework
         public BookOperationResult AddBook(Book book, int numberOfCopies = 1)
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
-            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "number of copies must be 1 or higher.");
+            if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Number of copies must be 1 or higher.");
 
             if (_booksInventory.ContainsKey(book))
             {
@@ -188,7 +188,7 @@ namespace Topologic.BookStoreFramework
         /// <param name="book">The book that's found in <see cref="BooksInventory"/>. Is set to null if no books is found.</param>
         /// <returns>True if <see cref="BooksInventory"/> contains the desired <see cref="Book"/>, otherwise false.</returns>
         /// <exception cref="IsbnFormatException">Thrown if provided <paramref name="isbn"/> format is invalid.</exception>
-        public bool TryFindBookByIsbn(string isbn, out Book book)
+        public bool TryFindBookByIsbn(string isbn, out Book? book)
         {
             if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN. It must be either 10 or 13 letter format.");
             foreach (var bookX in _booksInventory)

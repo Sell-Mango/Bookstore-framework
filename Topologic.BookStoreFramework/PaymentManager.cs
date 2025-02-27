@@ -29,18 +29,15 @@ namespace Topologic.BookStoreFramework
 
         /// <summary>
         /// Gets the current payment processor for the <see cref="Customer"/> to pay for orders.
-        /// Use <see cref="SetPaymentProcessor"/> to set a payment processor."/> before use.
         /// </summary>
-        public IPaymentProcessor PaymentProcessor => _paymentProcessor;
-
-        /// <summary>
-        /// Sets the payment processor for the <see cref="Customer"/> to pay for orders.
-        /// </summary>
-        /// <param name="paymentProcessor">The concrete implementation of a payment processor.</param>
-        /// <exception cref="ArgumentNullException">Throws if <paramref name="paymentProcessor"/> is null.</exception>
-        public void SetPaymentProcessor(IPaymentProcessor paymentProcessor)
+        /// <exception cref="ArgumentNullException">Thrown if payment processor is not set.</exception>"
+        public IPaymentProcessor? PaymentProcessor
         {
-            _paymentProcessor = paymentProcessor ?? throw new ArgumentNullException(nameof(paymentProcessor), "Payment processor cannot be null.");
+            get => _paymentProcessor;
+            set 
+            {
+                _paymentProcessor = value ?? throw new ArgumentNullException(nameof(value), "Payment processor cannot be null.");
+            }
         }
 
         /// <summary>
@@ -81,15 +78,16 @@ namespace Topologic.BookStoreFramework
         /// <exception cref="PaymentProcessingException">Thrown if payment processor fails to process payment.</exception>
         public bool PurchaseOrder(Customer customer, ShoppingCart currentShoppingCart)
         {
-            if (_paymentProcessor is null) throw new InvalidOperationException("Payment processor is not set. Cannot process payment unless payment method is set.");
-            
+            if (PaymentProcessor is null) throw new InvalidOperationException("Payment processor is not set. Cannot process payment unless payment method is set.");
             
             ValdiateCorrectCustomer(customer, currentShoppingCart);
 
             double amountToPay = currentShoppingCart.CalculateSubTotal();
 
-            if (PaymentProcessor.ProcessPayment(customer, amountToPay))
+            try
             {
+                PaymentProcessor.ProcessPayment(customer, amountToPay);
+
                 var order = new Order(
                     customer.CustomerId,
                     DateTime.Now,
@@ -105,15 +103,17 @@ namespace Topologic.BookStoreFramework
                 }
 
                 currentShoppingCart.ClearCart();
-            }
 
-            else
+            }
+            catch(InvalidOperationException)
             {
                 throw new PaymentProcessingException($"Something went wrong when processing your payment with: {PaymentProcessor.PaymentMethodName}.");
             }
 
-            ClearPaymentProcessor();
-
+            finally
+            {
+                ClearPaymentProcessor();
+            }
             return true;
         }
     }

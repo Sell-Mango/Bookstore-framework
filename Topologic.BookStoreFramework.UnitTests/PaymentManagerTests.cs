@@ -57,7 +57,7 @@ namespace Topologic.BookStoreFramework.UnitTests
             IPaymentProcessor paymentProcessor = new PaypalPaymentMethod();
 
             // Act
-            _paymentManager.SetPaymentProcessor(paymentProcessor);
+            _paymentManager.PaymentProcessor = paymentProcessor;
 
             // Assert
             Assert.AreEqual(paymentProcessor, _paymentManager.PaymentProcessor);
@@ -68,7 +68,7 @@ namespace Topologic.BookStoreFramework.UnitTests
         {
             // Arrange
             IPaymentProcessor paymentProcessor = new PaypalPaymentMethod();
-            _paymentManager.SetPaymentProcessor(paymentProcessor);
+            _paymentManager.PaymentProcessor = paymentProcessor;
 
             // Act
             _paymentManager.ClearPaymentProcessor();
@@ -83,7 +83,7 @@ namespace Topologic.BookStoreFramework.UnitTests
             // Arrange
             _customer.AddFundsToWallet(9999);
             IPaymentProcessor paymentProcessor = new PaypalPaymentMethod();
-            _paymentManager.SetPaymentProcessor(paymentProcessor);
+            _paymentManager.PaymentProcessor = paymentProcessor;
 
             // Act
             var result = _paymentManager.PurchaseOrder(_customer, _shoppingCart);
@@ -98,7 +98,7 @@ namespace Topologic.BookStoreFramework.UnitTests
                 // Arrange
                 _customer.AddFundsToWallet(100);
                 IPaymentProcessor paymentProcessor = new PaypalPaymentMethod();
-                _paymentManager.SetPaymentProcessor(paymentProcessor);
+                _paymentManager.PaymentProcessor = paymentProcessor;
 
                 // Act and assert
                 Assert.ThrowsException<PaymentProcessingException>(() => _paymentManager.PurchaseOrder(_customer, _shoppingCart));
