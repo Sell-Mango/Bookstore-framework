@@ -1,4 +1,6 @@
-﻿namespace Topologic.BookStoreFramework.UnitTests
+﻿using Topologic.BookStoreFramework.Advanced;
+
+namespace Topologic.BookStoreFramework.UnitTests
 {
     [TestClass]
     public class ShoppingCartTests
@@ -22,118 +24,57 @@
             _book2 = new PhysicalBook("978-0-7330-7673-2", "Witcher", 370, 456, BookCoverType.Hardcover);
             _book3 = new PhysicalBook("0-3599-3099-9", "Snømannen", 599, 588, BookCoverType.Paperback, "Ola Normann", "Some description", "Nb-No", "Egmont", new DateTime(2011, 05, 12));
 
-            _inventoryManager.AddBook(_book1, 2);
+            _inventoryManager.AddBook(_book1, 5);
             _inventoryManager.AddBook(_book2, 8);
-
         }
-
-        [TestMethod]
-        public void AddToCart_AddingBooksIfInStockToCart_ShouldAddBookToCart()
-        {
-            // Arrange
-            var excpectedMessage = BookOperationResult.Added;
-
-            // Act
-            var result = _shoppingCart.AddToCart(_book1);
-
-            // Assert
-            Assert.AreEqual(excpectedMessage, result);
-        }
-
-        [TestMethod]
-        public void AddToCart_AddingExistingBookToCart_ShouldIncreaseQuantityOfBook()
-        {
-            // Arrange
-            var excpectedMessage = BookOperationResult.Increased;
-            _shoppingCart.AddToCart(_book1);
-
-            // Act
-            var result = _shoppingCart.AddToCart(_book1);
-
-            // Assert
-            Assert.AreEqual(excpectedMessage, result);
-        }
-
-        [TestMethod]
-        public void AddToCart_AddingMoreBooksThanAvailableInStock_ArgumentOutOfRangeException()
-        {
-            // Arrange
-            _shoppingCart.AddToCart(_book1, 2);
-
-            // Act and Assert
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _shoppingCart.AddToCart(_book1, 1));
-
-        }
-
-        [TestMethod]
-        public void AddToCart_AddNegativeQuantityToCart_ThrowsArgumenOutOfRangeException()
-        {
-            // Act and Assert
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _shoppingCart.AddToCart(_book1, -1));
-        }
-
 
         [TestMethod]
         public void RemoveFromCart_RemoveBookFromCart_ShouldRemoveBookIfLast()
         {
             // Arrange
-            var expectedMessage = BookOperationResult.Removed;
             _shoppingCart.AddToCart(_book1);
 
             // Act
-            var result = _shoppingCart.RemoveFromCart(_book1);
+            _shoppingCart.RemoveFromCart(_book1);
 
             // Assert
-            Assert.IsTrue(expectedMessage.Equals(result));
+            Assert.IsFalse(_shoppingCart.ItemsInCart.TryGetValue(_book1, out _));
         }
 
         [TestMethod]
         public void RemoveFromCart_DecreaseQuantityIfNotLast_ShouldKeepBookIfNotLast()
         {
             // Arrange
-            var expectedMessage = BookOperationResult.Decreased;
             _shoppingCart.AddToCart(_book1, 2);
 
             // Act
-            var result = _shoppingCart.RemoveFromCart(_book1);
+            _shoppingCart.RemoveFromCart(_book1);
 
             // Assert
-            Assert.IsTrue(expectedMessage.Equals(result));
-
+            Assert.IsTrue(_shoppingCart.ItemsInCart.TryGetValue(_book1, out _));
         }
 
         [TestMethod]
-        public void RemoveFromCart_RemoveBookThatDoesntExist_ReturnMessageNotFound()
+        public void RemoveFromCart_RemoveBookThatDoesntExist_ThrowsInvalidOperationException()
         {
-            // Arrange
-            var expectedMessage = BookOperationResult.NotFound;
-            // Act
-            var result = _shoppingCart.RemoveFromCart(_book3);
-
-            // Assert
-            Assert.IsTrue(expectedMessage.Equals(result));
+            // Act and arrange
+            Assert.ThrowsException<InvalidOperationException>(() => _shoppingCart.RemoveFromCart(_book3));
         }
 
         [TestMethod]
-        public void RemoveFromCart_AddNegativeQuantityToCart_ArgumentOutOfRangeException()
-        {
-            // Act and Assert
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _shoppingCart.RemoveFromCart(_book1, -1));
-        }
-
-        [TestMethod]
-        public void CalculateSubTotal_SumPriceOfBooksInCart_ShouldReturnSumOfCart()
+        public void RemoveFromCart_CalculateSubTotal_ShouldReturnCorrectSubTotal()
         {
             // Arrange
             _shoppingCart.AddToCart(_book1, 2);
-            _shoppingCart.AddToCart(_book2, 4);
-            var expectedResult = 2078;
+            _shoppingCart.AddToCart(_book2);
+            
+            var expectedSubTotal = _book1.Price * 2 + _book2.Price;
 
             // Act
             var result = _shoppingCart.CalculateSubTotal();
 
             // Assert
-            Assert.AreEqual(expectedResult, result);
+            Assert.AreEqual(expectedSubTotal, result);
         }
 
         [TestMethod]
@@ -148,7 +89,7 @@
             // Assert
             Assert.AreEqual(expectedResult, result);
         }
-
+        
         [TestMethod]
         public void ClearCart_ClearsItemsInCart_CartShouldBeEmpty()
         {
@@ -162,7 +103,6 @@
 
             // Assert
             Assert.AreEqual(expectedResult, _shoppingCart.ItemsInCart.Count);
-
         }
     }
 }

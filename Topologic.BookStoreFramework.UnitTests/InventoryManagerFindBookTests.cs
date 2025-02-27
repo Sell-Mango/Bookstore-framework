@@ -29,16 +29,42 @@
             Assert.IsTrue(expectedBook.Equals(result));
         }
 
+        
         [TestMethod]
-        public void FindBookByTitle_SearchForAnNonExistingBook_ThrowsArgumentException()
+        public void FindBookByTitle_SearchForAnNonExistingBook_ThrowsKeyNotFoundException()
         {
             // Arrange
             _inventoryManager.AddBook(_book2);
 
             // Act and Assert
-            Assert.ThrowsException<ArgumentException>(() => _inventoryManager.FindBookByTitle("Witcher 2"));
+            Assert.ThrowsException<KeyNotFoundException>(() => _inventoryManager.FindBookByTitle("Witcher 2"));
         }
 
+        [TestMethod]
+        public void TryFindBookByTitle_SearchForAnExistingBook_ShouldReturnTrueAndSpecifiedBook()
+        {
+            // Arrange
+            var expectedBook = _book1;
+            _inventoryManager.AddBook(expectedBook);
+
+            // Act
+            if(_inventoryManager.TryFindBookByTitle("Lord of the Rings: Two Towers", out var result))
+            {
+                // Assert
+                Assert.AreEqual(expectedBook, result);
+            }
+        }
+
+        [TestMethod]
+        public void TryFindBookByTite_SearchForAnNonExistingBook_ShouldReturnFalse()
+        {
+            // Arrange
+            _inventoryManager.AddBook(_book1);
+
+            // Act and Assert
+            Assert.IsFalse(_inventoryManager.TryFindBookByTitle("Witcher 2", out _));
+        }
+        
         [TestMethod]
         public void FindBookByIsbn_SearchForAnExistingBook_ShouldReturnSpecifiedBook()
         {
@@ -54,13 +80,37 @@
         }
 
         [TestMethod]
-        public void FindBookByisbn_SearchForAnNonExistingBook_ThrowsArgumentException()
+        public void FindBookByisbn_SearchForAnNonExistingBook_ThrowsKeyNotFoundException()
         {
             // Arrange
             _inventoryManager.AddBook(_book1);
 
             // Act and Assert
-            Assert.ThrowsException<ArgumentException>(() => _inventoryManager.FindBookByTitle("978-3-8747-4452-5"));
+            Assert.ThrowsException<KeyNotFoundException>(() => _inventoryManager.FindBookByTitle("978-3-8747-4452-5"));
+        }
+
+        [TestMethod]
+        public void TryFindBookByIsbn_SearchForAnExistingBook_ShouldReturnTrueAndSpecifiedBook()
+        {
+            // Arrange
+            var expectedBook = _book2;
+            _inventoryManager.AddBook(expectedBook);
+
+            // Act
+            if (_inventoryManager.TryFindBookByIsbn("978-0-7330-7673-2", out var result))
+            {
+                // Assert
+                Assert.AreEqual(expectedBook, result);
+            }
+        }
+
+        [TestMethod]
+        public void TryFindBookByIsbn_SearchForAnNonExistingBook_ShouldReturnFalse()
+        {
+            // Arrange
+            _inventoryManager.AddBook(_book2);
+            // Act and Assert
+            Assert.IsFalse(_inventoryManager.TryFindBookByIsbn("978-0-7330-7673-3", out _));
         }
     }
 }

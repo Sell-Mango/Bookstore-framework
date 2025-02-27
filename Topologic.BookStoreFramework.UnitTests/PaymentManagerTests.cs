@@ -1,4 +1,6 @@
-﻿namespace Topologic.BookStoreFramework.UnitTests
+﻿using Topologic.BookStoreFramework.Advanced;
+
+namespace Topologic.BookStoreFramework.UnitTests
 {
     [TestClass]
     public class PaymentManagerTests
@@ -32,29 +34,74 @@
         }
 
         [TestMethod]
-        public void PurchaseOrder_SuccessfullyPurchasesOrder_ShouldReturnTrue()
+        public void ValidateCorrectCustomer_CustomerOwnsShoppingCart_ShouldReturnTrue()
+        {
+            // Act and arrange
+            Assert.IsTrue(_paymentManager.ValdiateCorrectCustomer(_customer, _shoppingCart));
+        }
+
+        [TestMethod]
+        public void ValidateCorrectCustomer_CustomerDoesNotOwnShoppingCart_ThrowsArgumentException()
         {
             // Arrange
+            Customer _customer2 = new("olaNorman@test.no");
+
+            // Act and Assert
+            Assert.ThrowsException<ArgumentException>(() => _paymentManager.ValdiateCorrectCustomer(_customer2, _shoppingCart));
+        }
+
+        [TestMethod]
+        public void SetPaymentProcessor_ValidPaymentProcessor_ShouldSetPaymentProcessor()
+        {
+            // Arrange
+            IPaymentProcessor paymentProcessor = new PaypalPaymentMethod();
+
+            // Act
+            _paymentManager.SetPaymentProcessor(paymentProcessor);
+
+            // Assert
+            Assert.AreEqual(paymentProcessor, _paymentManager.PaymentProcessor);
+        }
+
+        [TestMethod]
+        public void ClearPaymentProcessor_ClearThePaymentProcessorAfterUse_ThrowsArgumentNullException()
+        {
+            // Arrange
+            IPaymentProcessor paymentProcessor = new PaypalPaymentMethod();
+            _paymentManager.SetPaymentProcessor(paymentProcessor);
+
+            // Act
+            _paymentManager.ClearPaymentProcessor();
+
+            // Assert
+            Assert.IsNull(_paymentManager.PaymentProcessor);
+        }
+
+          [TestMethod]
+          public void PurchaseOrder_SuccessfullyPurchasesOrder_ShouldReturnTrue()
+          {
+            // Arrange
             _customer.AddFundsToWallet(9999);
+            IPaymentProcessor paymentProcessor = new PaypalPaymentMethod();
+            _paymentManager.SetPaymentProcessor(paymentProcessor);
 
             // Act
             var result = _paymentManager.PurchaseOrder(_customer, _shoppingCart);
 
             // Assert
             Assert.IsTrue(result);
-        }
+          }
 
-        [TestMethod]
-        public void PurchaseOrder_NotEnoughFundsToPurchaseOrder_ShouldReturnFalse()
-        {
-            // Arrange
-            _customer.AddFundsToWallet(100);
+          [TestMethod]
+          public void PurchaseOrder_NotEnoughFundsToPurchaseOrderThrowPaymentProcessingException()
+          {
+                // Arrange
+                _customer.AddFundsToWallet(100);
+                IPaymentProcessor paymentProcessor = new PaypalPaymentMethod();
+                _paymentManager.SetPaymentProcessor(paymentProcessor);
 
-            // Act
-            var result = _paymentManager.PurchaseOrder(_customer, _shoppingCart);
-
-            // Assert
-            Assert.IsFalse(result);
-        }
+                // Act and assert
+                Assert.ThrowsException<PaymentProcessingException>(() => _paymentManager.PurchaseOrder(_customer, _shoppingCart));
+          }
     }
 }

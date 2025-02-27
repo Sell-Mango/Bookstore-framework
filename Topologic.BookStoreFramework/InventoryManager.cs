@@ -100,16 +100,17 @@ namespace Topologic.BookStoreFramework
         /// <param name="canRemoveAll">Allows removing a book even if there are copies left. Defaults to false.</param>
         /// <returns><see cref="BookOperationResult.Removed"/> if the <see cref="Book"/> is successfully removed from the inventory.</returns>
         /// <exception cref="ArgumentNullException">Thrown if provided <paramref name="book"> is null.</exception>
+        /// <exception cref="KeyNotFoundException">Thrown if <paramref name="book"/> is not found in inventory.</exception>"
         /// <exception cref="InvalidOperationException">Thrown if trying to remove a book while there still are copies left and <paramref name="canRemoveAll"/> is false.</exception>
-        public BookOperationResult RemoveBook(Book book, bool canRemoveAll)
+        public BookOperationResult RemoveBook(Book book, bool canRemoveAll = false)
         {
             ArgumentNullException.ThrowIfNull(book, nameof(book));
 
-            if (!_booksInventory.TryGetValue(book, out _))
+            if (!_booksInventory.TryGetValue(book, out int copiesInInventory))
             {
                 throw new KeyNotFoundException($"Book with title {book.Title} and ISBN {book.Isbn} not found in inventory. Try checking again with another title or ISBN.");
             }
-            if (!canRemoveAll)
+            if (copiesInInventory > 0 && !canRemoveAll)
             {
                 throw new InvalidOperationException($"Cannot remove all copies of the book {book.Title}. Either allow removing all by changing canRemoveAll to true, or use DecreaseBook method to set the available number to 0 first.");
             }
@@ -144,7 +145,7 @@ namespace Topologic.BookStoreFramework
         /// <param name="book">The book that's found in <see cref="BooksInventory"/>.Is set to null if no books is found</param>
         /// <returns>True if <see cref="BooksInventory"/> contains the desired <see cref="Book"/>, otherwise false.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="title"/> is null or empty.</exception>
-        public bool TryFindBookByTite(string title, out Book? book)
+        public bool TryFindBookByTitle(string title, out Book? book)
         {
             if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(nameof(title), "Title cannot be null or empty.");
             

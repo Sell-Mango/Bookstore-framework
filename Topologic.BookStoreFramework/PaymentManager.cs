@@ -51,7 +51,6 @@ namespace Topologic.BookStoreFramework
             _paymentProcessor = null;
         }
 
-
         /// <summary>
         /// Validate if correct <see cref="Customer"/> is purchasing items in a <see cref="ShoppingCart"/>.
         /// </summary>

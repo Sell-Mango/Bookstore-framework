@@ -57,7 +57,7 @@ namespace Topologic.BookStoreFramework
 
             if (numberOfCopies < 1) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Number of copies must be 1 or higher.");
             
-            if (!InventoryManager.BooksInventory.TryGetValue(book, out var copiesInInventory)) throw new ArgumentOutOfRangeException(nameof(numberOfCopies), "Book does not exist.");
+            if (!InventoryManager.BooksInventory.TryGetValue(book, out var copiesInInventory)) throw new KeyNotFoundException("Book does not exist in Inventory, add it there before adding to cart.");
             
             if (numberOfCopies > copiesInInventory) throw new OutOfStockException($"Quantity of {numberOfCopies} exceeds whats in stock: {copiesInInventory}.");
             

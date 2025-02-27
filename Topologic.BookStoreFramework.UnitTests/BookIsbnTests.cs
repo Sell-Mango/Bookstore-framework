@@ -1,4 +1,6 @@
-﻿namespace Topologic.BookStoreFramework.UnitTests
+﻿using Topologic.BookStoreFramework.Advanced;
+
+namespace Topologic.BookStoreFramework.UnitTests
 {
     [TestClass]
     public class BookIsbnTests
@@ -36,7 +38,7 @@
             string invalidIsbn13Letters = "888-8-8362-285-32";
 
             // Act and Assert
-            Assert.ThrowsException<ArgumentException>(() => new PhysicalBook(invalidIsbn13Letters));
+            Assert.ThrowsException<IsbnFormatException>(() => new PhysicalBook(invalidIsbn13Letters));
         }
 
     }

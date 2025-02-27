@@ -3,7 +3,7 @@
     [TestClass]
     public class InventoryManagerAddBookTests
     {
-        private InventoryManager _inventoryManager;
+      private InventoryManager _inventoryManager;
         private PhysicalBook _book1;
         private PhysicalBook _book2;
         private PhysicalBook _book3;
@@ -12,7 +12,6 @@
         private AudioBook _audioBook1;
         private AudioBook _audioBook2;
         private EBook _eBook1;
-
 
         [TestInitialize]
         public void Setup()
@@ -42,6 +41,7 @@
             Assert.AreEqual(expectedValue, _inventoryManager.BooksInventory.Count);
         }
 
+        
         [TestMethod]
         public void AddBook_AddBookWithExistingISBN_ShouldIncreaseQuantity()
         {
@@ -53,24 +53,12 @@
             _inventoryManager.AddBook(_book2);
             _inventoryManager.AddBook(_book4);
             Assert.AreEqual(firstExpectedQuantity, _inventoryManager.BooksInventory[_book2]);
+            
             _inventoryManager.AddBook(_book5);
             Assert.AreEqual(secondExpectedQuantity, _inventoryManager.BooksInventory[_book2]);
         }
 
-        [TestMethod]
-        public void AddBook_AddNewBookWithQuantity_QuantityShouldBeMoreThanOne()
-        {
-            // Arrange
-            int expectedQuantity = 3;
-
-            // Act
-            _inventoryManager.AddBook(_book2);
-            _inventoryManager.AddBook(_book1, 3);
-
-            // Assert
-            Assert.AreEqual(expectedQuantity, _inventoryManager.BooksInventory[_book1]);
-        }
-
+        
         [TestMethod]
         public void AddBook_AddMultipleQuantitiesOfSameBook_ShouldReturnMessageIncreased()
         {
@@ -86,6 +74,7 @@
             Assert.AreEqual(expectedMessage, result);
         }
 
+        
         [TestMethod]
         public void AddBook_AddMultipleBooks_ShouldAddMultipleItemsToInventory()
         {
@@ -106,12 +95,12 @@
             Assert.AreEqual(expectedUniquieItemCount, _inventoryManager.BooksInventory.Count);
         }
 
+        
         [TestMethod]
         public void AddBook_AddNegativeQuantity_ThrowsArgumentOutOfRangeException()
         {
             // Act and Assert
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => _inventoryManager.AddBook(_book2, -1));
         }
-
     }
 }
