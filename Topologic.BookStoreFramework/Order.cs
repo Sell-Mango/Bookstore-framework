@@ -17,7 +17,7 @@ namespace Topologic.BookStoreFramework
         private readonly Dictionary<Book, int> _orderedItems;
 
         /// <summary>
-        /// Creates a new instance of an Order class with all necessary information.
+        /// Creates a new instance of an <see cref="Order"/> class with all necessary information.
         /// Generates a new unique order id.
         /// </summary>
         /// <param name="customerId"></param>
@@ -35,35 +35,39 @@ namespace Topologic.BookStoreFramework
         }
 
         /// <summary>
-        /// Gets the unique id for the order.
+        /// Gets the unique id for the <see cref="Order"/>.
         /// </summary>
         /// <value>Order id that is automatically generated.</value>
         public string OrderId { get => _orderId; }
 
         /// <summary>
-        /// Gets the customer id for the order.
+        /// Gets the customer id for the <see cref="Order"/>.
         /// </summary>
-        /// <value>Customer id that made the order.</value>
+        /// <value>Customer id that made the <see cref="Order"/>.</value>
         public string CustomerId { get => _customerId; }
 
         /// <summary>
-        /// Gets the date and time when the order was made.
+        /// Gets the date and time when the <see cref="Order"/> was made.
         /// </summary>
         /// <value>Order date and time.</value>
         public DateTime OrderDateTime { get => _orderDateTime; }
 
         /// <summary>
-        /// Gets the total amount of the order.
+        /// Gets the total amount of the <see cref="Order"/>.
         /// </summary>
         /// <value>Order total amount, made up of all items in <see cref="OrderedItems"/>.</value>
         public double OrderTotal { get => _orderTotal; }
 
         /// <summary>
-        /// Gets the items ordered in the order.
+        /// Gets the items ordered in the <see cref="Order"/>.
         /// </summary>
         /// <value>Dictionary of bought books and their quantities.</value>
         public ReadOnlyDictionary<Book, int> OrderedItems => _orderedItems.AsReadOnly();
-        
+
+        /// <summary>
+        /// Overrides ToString method to provide basic information representing the <see cref="Order"/>.
+        /// </summary>
+        /// <returns>A string representation of the order.</returns>
         public override string ToString()
         {
             StringBuilder sb = new();

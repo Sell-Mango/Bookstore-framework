@@ -19,7 +19,7 @@
         /// Creates a new instance of a <see cref="Book"/> class with valid ISBN only (minimal constructor).
         /// </summary>
         /// <param name="isbn">A valid ISBN for the Book, cannot be changed later.</param>
-        /// <exception cref="ArgumentException">Thrown when ISBN is invalid.</exception>
+        /// <exception cref="IsbnFormatException">Thrown when ISBN is invalid.</exception>
         protected Book(string isbn)
         {
             if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format.");
@@ -35,7 +35,7 @@
         /// <param name="isbn">A valid ISBN for the Book, cannot be changed later.</param>
         /// <param name="title">Title of the book.</param>
         /// <param name="price">Price for the book.</param>
-        /// <exception cref="ArgumentException">Thrown when ISBN is invalid.</exception>
+        /// <exception cref="IsbnFormatException">Thrown when ISBN is invalid.</exception>
         protected Book(string isbn, string title, double price)
         {
             if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format.");
@@ -56,7 +56,7 @@
         /// <param name="language">Written language for the book.</param>
         /// <param name="publisherName">Publisher for the book.</param>
         /// <param name="releaseDate">Release date for the book.</param>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="IsbnFormatException"></exception>
         protected Book(string isbn, string title, double price, string authorName, string description, string language, string publisherName, DateTime releaseDate)
         {
             if (!IsbnValidator.IsValidIsbn(isbn)) throw new IsbnFormatException("Invalid ISBN provided, it must either be 10 or 13 letter format.");

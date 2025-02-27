@@ -4,7 +4,7 @@ namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// Represents a physical book derived from <see cref="Book"/>.
-    /// Can be added to the inventory of a <see cref="InventoryManager"/> and can be bought by a <see cref="Customer"/>."/>
+    /// Can be added to the inventory of a <see cref="InventoryManager"/> and can be bought by a <see cref="Customer"/>.
     /// </summary>
     public class PhysicalBook : Book
     {
@@ -71,7 +71,7 @@ namespace Topologic.BookStoreFramework
             {
                 if(value <= 0)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Amount of pages must be higher than 0.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Amount of pages must be greater than 0.");
                 }
                 _totalPages = value;
             }

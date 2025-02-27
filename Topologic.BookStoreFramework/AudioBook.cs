@@ -4,7 +4,7 @@ namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// Represents an audio book, derived from <see cref="Book"/>.
-    /// Can be added to the inventory of a <see cref="InventoryManager"/> and can be bought by a <see cref="Customer"/>."/>
+    /// Can be added to the inventory of a <see cref="InventoryManager"/> and can be bought by a <see cref="Customer"/>.
     /// </summary>
     public class AudioBook : Book
     {

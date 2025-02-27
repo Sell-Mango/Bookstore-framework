@@ -11,7 +11,6 @@ namespace Topologic.BookStoreFramework
     {
         private IPaymentProcessor? _paymentProcessor;
 
-
         /// <summary>
         /// Creates a new instance of a PaymentManager class with an existing inventory manager.
         /// </summary>
@@ -28,13 +27,25 @@ namespace Topologic.BookStoreFramework
         /// <value>Inventory manager of books for the payment manager to check current stock.</value>
         public InventoryManager InventoryManager { get; private set; }
 
+        /// <summary>
+        /// Gets the current payment processor for the <see cref="Customer"/> to pay for orders.
+        /// Use <see cref="SetPaymentProcessor"/> to set a payment processor."/> before use.
+        /// </summary>
         public IPaymentProcessor PaymentProcessor => _paymentProcessor;
 
+        /// <summary>
+        /// Sets the payment processor for the <see cref="Customer"/> to pay for orders.
+        /// </summary>
+        /// <param name="paymentProcessor">The concrete implementation of a payment processor.</param>
+        /// <exception cref="ArgumentNullException">Throws if <paramref name="paymentProcessor"/> is null.</exception>
         public void SetPaymentProcessor(IPaymentProcessor paymentProcessor)
         {
             _paymentProcessor = paymentProcessor ?? throw new ArgumentNullException(nameof(paymentProcessor), "Payment processor cannot be null.");
         }
 
+        /// <summary>
+        /// Clears the current payment processor after use.
+        /// </summary>
         public void ClearPaymentProcessor()
         {
             _paymentProcessor = null;
@@ -62,12 +73,13 @@ namespace Topologic.BookStoreFramework
         /// <summary>
         /// Completes the purchase made by a <see cref="Customer"/> in a <see cref="ShoppingCart"/>.
         /// Validates a <see cref="Customer"/> has enough funds to purchase items.
-        /// Creates a new <see cref="Order"/> and adds it to the <see cref="Customer"/> order history,
+        /// Creates a new <see cref="Order"/> if <see cref="PaymentProcessor"/> returns true, and adds it to the <see cref="Customer"/> order history,
         /// then remove bought items from <see cref="InventoryManager"/>.
         /// </summary>
         /// <param name="customer">The customer making an order.</param>
         /// <param name="currentShoppingCart">Shopping cart of the <paramref name="customer"/> making an order.</param>
         /// <returns>True if <paramref name="customer"/> successfully buys an order and stock items is removed from inventory. Otherwise false.</returns>
+        /// <exception cref="PaymentProcessingException">Thrown if payment processor fails to process payment.</exception>
         public bool PurchaseOrder(Customer customer, ShoppingCart currentShoppingCart)
         {
             if (_paymentProcessor is null) throw new InvalidOperationException("Payment processor is not set. Cannot process payment unless payment method is set.");
@@ -76,7 +88,6 @@ namespace Topologic.BookStoreFramework
             ValdiateCorrectCustomer(customer, currentShoppingCart);
 
             double amountToPay = currentShoppingCart.CalculateSubTotal();
-
 
             if (PaymentProcessor.ProcessPayment(customer, amountToPay))
             {
@@ -105,8 +116,6 @@ namespace Topologic.BookStoreFramework
             ClearPaymentProcessor();
 
             return true;
-
-
         }
     }
 }

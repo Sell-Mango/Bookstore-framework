@@ -4,7 +4,7 @@ using Topologic.BookStoreFramework.Advanced;
 namespace Topologic.BookStoreFramework
 {
     /// <summary>
-    /// Represents a customer that can buy books. 
+    /// Represents a customer that can buy books and keep track of orders history. 
     /// An unique identifier is generated for each customer.
     /// </summary>
     public class Customer
@@ -49,12 +49,12 @@ namespace Topologic.BookStoreFramework
         /// </summary>
         /// <value>Customer email address.</value>
         /// <exception cref="ArgumentNullException">Thrown when email is null or empty.</exception>
-        /// <exception cref="ArgumentException">Thrown when email is invalid format, see <see cref="CustomerValidator"/> for specifications.</exception>"
+        /// <exception cref="ArgumentException">Thrown when email is invalid format, see <see cref="CustomerValidator"/> for specifications.</exception>
         public string Email { 
             get => _email;
             set
             {
-                if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "Email cannot be null or empty");
+                if(string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "Email cannot be null or empty.");
                 if (!CustomerValidator.IsEmailValid(value)) throw new ArgumentException("Invalid email format.", nameof(value));
                 _email = value;
             }
@@ -69,7 +69,7 @@ namespace Topologic.BookStoreFramework
             get => _firstName;
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "First name cannot be empty or null.");
+                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "First name cannot be null or empty.");
                 _firstName = value;
             }
         }
@@ -84,7 +84,7 @@ namespace Topologic.BookStoreFramework
             get => _lastName;
             set
             {
-                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "Last name cannot be empty or null.");
+                if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(nameof(value), "Last name cannot be null or empty.");
                 _lastName = value;
             }
         }
@@ -96,7 +96,7 @@ namespace Topologic.BookStoreFramework
         public string CustomerId { get; }
 
         /// <summary>
-        /// Gets the wallet balance of the customer.
+        /// Gets the wallet balance of the customer. Use <see cref="AddFundsToWallet"/> to add and <see cref="DecreaseFundsFromWallet"/> to decrease funds.
         /// </summary>
         /// <value>Current wallet balance of customer.</value>
         public double Wallet { get; private set; }
@@ -112,19 +112,30 @@ namespace Topologic.BookStoreFramework
         /// </summary>
         /// <param name="amountToAdd">Amount of funds to add to <see cref="Wallet"/></param>
         /// <returns>True if a positive amount is successfully added, otherwise false.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown if zero or negative amount is added.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="amountToAdd"/> is 0 or negative.</exception>
         public bool AddFundsToWallet(double amountToAdd)
         {
-            if (amountToAdd <= 0) throw new ArgumentOutOfRangeException(nameof(amountToAdd), "Amount to add to balance must be higher than 0.");
+            if (amountToAdd <= 0) throw new ArgumentOutOfRangeException(nameof(amountToAdd), "Amount to add to balance must be greater than 0.");
 
             Wallet += amountToAdd;
             return true;
         }
 
+        /// <summary>
+        /// Decreases funds from the customer's wallet.
+        /// </summary>
+        /// <param name="amountToDecrease">Amount to decrease.</param>
+        /// <returns>True if funds is successfully decreased from the <see cref="Wallet"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="amountToDecrease"/> is 0 or negative.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if insuficcent amount is being decreased from <see cref="Wallet"/>.</exception>
         public bool DecreaseFundsFromWallet(double amountToDecrease)
         {
-            if (amountToDecrease <= 0) throw new ArgumentOutOfRangeException(nameof(amountToDecrease), "Amount to decrease from balance must be higher than 0.");
-            
+            if (amountToDecrease <= 0) throw new ArgumentOutOfRangeException(nameof(amountToDecrease), "Amount to decrease from balance must be greater than 0.");
+
+            if (amountToDecrease > Wallet)
+            {
+                throw new InvalidOperationException("Cannot decrease amount of money. Are you sure there are sufficcent balance in your wallet?");
+            }
             Wallet -= amountToDecrease;
             return true;
         }
@@ -133,7 +144,7 @@ namespace Topologic.BookStoreFramework
         /// Adding a newly created <see cref="Order"/> to the customer's order history."/>
         /// Should be called after the order is created from a manager class like <see cref="PaymentManager"/>.
         /// </summary>
-        /// <param name="order">Order to be added to <see cref="OrdersHistory"/></param>
+        /// <param name="order">Order to be added to <see cref="OrdersHistory"/>.</param>
         /// <returns>True if an order object is successfully added to <see cref="OrdersHistory"/>, otherwise false or an <see cref="ArgumentNullException"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown if order is null.</exception>"
         public bool AddToOrdersHistory(Order order)

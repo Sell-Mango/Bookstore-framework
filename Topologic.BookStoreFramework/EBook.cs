@@ -5,7 +5,7 @@ namespace Topologic.BookStoreFramework
 {
     /// <summary>
     /// Represents an a digital book, derived from <see cref="Book"/> class.
-    /// Can be added to the inventory of a <see cref="InventoryManager"/> and can be bought by a <see cref="Customer"/>."/>
+    /// Can be added to the inventory of a <see cref="InventoryManager"/> and can be bought by a <see cref="Customer"/>.
     /// </summary>
     public class EBook : Book
     {
@@ -66,7 +66,7 @@ namespace Topologic.BookStoreFramework
             set
             {
 
-                if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "File size cant be zero or negative");
+                if (value <= 0) throw new ArgumentOutOfRangeException(nameof(value), "File size cannot be 0 or negative.");
 
                 _fileSize = value;
             }

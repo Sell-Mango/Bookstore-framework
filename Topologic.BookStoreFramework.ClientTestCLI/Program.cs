@@ -15,7 +15,7 @@ class Program
         // Create a new shopping cart for customer1
         ShoppingCart shoppingCartCustomer1 = new(inventoryManager, customer1.CustomerId);
 
-
+        AudioBook audiobook5 = new("978-0-1609-7689-7");
         // 2. Create some different derived books
         // Valid ISBN numbers for testing can be generated here: https://generate.plus/en/number/isbn
         PhysicalBook physicalBook1 = new("978-0-1609-7689-6");

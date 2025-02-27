@@ -17,6 +17,10 @@ namespace Topologic.BookStoreFramework
         /// A new <see cref="Book"/> was added successfully added to a collection.
         /// </summary>
         Added,
+
+        /// <summary>
+        /// A <see cref="Book"/> was removed successfully from a collection.
+        /// </summary>
         Removed,
 
         /// <summary>
